@@ -5,8 +5,36 @@
   "main": "index.js",
   "scripts": {
     "start": "docker-compose up",
-    "stop": "docker-compose down"
+    "stop": "docker-compose down",
+    "lint": "standard",
+    "unit": "jest",
+    "mutation": "echo mutation",
+    "integration": "lerna run --stream integration",
+    "audit": "npm audit && lerna exec --stream npm audit",
+    "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
+    "watch": "npm run unit -- --watch --collectCoverage=false"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "oliver.ross@hotmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^1.3.1",
+    "jest": "^24.1.0",
+    "lerna": "^3.13.0",
+    "nodemon": "^1.18.10",
+    "standard": "^12.0.1",
+    "stryker": "^0.35.1",
+    "stryker-api": "^0.24.1"
+  },
+  "standard": {
+    "ignore": [],
+    "globals": [
+      "describe",
+      "it",
+      "expect"
+    ]
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true
+  }
 }
