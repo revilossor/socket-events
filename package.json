@@ -40,7 +40,7 @@
     ]
   },
   "jest": {
-    "verbose": true,
+    "verbose": false,
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
@@ -53,7 +53,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run unit",
+      "pre-commit": "lint-staged && npm run unit -- --verbose=true --onlyChanged",
       "pre-push": "npm t"
     }
   },
