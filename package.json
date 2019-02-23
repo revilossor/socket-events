@@ -11,7 +11,7 @@
     "mutation": "lerna run --stream mutation",
     "integration": "lerna run --stream integration",
     "audit": "npm audit && lerna exec --stream npm audit",
-    "test": "npm run lint && npm run unit && npm run mutation && npm run integration",
+    "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
     "watch": "npm run unit -- --watch --collectCoverage=false",
     "postinstall": "lerna bootstrap"
   },
@@ -21,6 +21,7 @@
     "husky": "^1.3.1",
     "jest": "^24.1.0",
     "lerna": "^3.13.0",
+    "lint-staged": "^8.1.4",
     "standard": "^12.0.1",
     "stryker": "^0.35.1",
     "stryker-api": "^0.24.1",
@@ -40,12 +41,23 @@
   },
   "jest": {
     "verbose": true,
-    "collectCoverage": true
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm t",
-      "pre-push": "npm t && npm run audit"
+      "pre-commit": "lint-staged && npm run unit",
+      "pre-push": "npm t"
     }
+  },
+  "lint-staged": {
+    "*.js": ["standard --fix", "git add"]
   }
 }
