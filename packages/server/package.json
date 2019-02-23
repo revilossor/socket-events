@@ -14,9 +14,11 @@
     "lib"
   ],
   "scripts": {
-    "mutation": "stryker run"
+    "mutation": "stryker run",
+    "start": "pm2 start pm2.config.js"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "pm2": "^3.3.1"
   }
 }
