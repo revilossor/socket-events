@@ -13,7 +13,7 @@ router.route('/').get(async (req, res) => {
     const comparator = await codec.decompress(query)
     const events = await Event.find(comparator)
 
-    return events && Array.isArray(events) && events.length > 0
+    return Array.isArray(events) && events.length > 0
       ? res.json(events)
       : res.status(404).json([])
   } catch (err) {
