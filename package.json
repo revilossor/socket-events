@@ -38,5 +38,11 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm t",
+      "pre-push": "npm t"
+    }
   }
 }
