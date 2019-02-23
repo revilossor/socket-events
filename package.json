@@ -12,7 +12,7 @@
     "integration": "lerna run --stream integration",
     "audit": "npm audit && lerna exec --stream npm audit",
     "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
-    "watch": "npm run unit -- --watch --collectCoverage=false",
+    "watch": "npm run unit -- --watch --collectCoverage=false --verbose=true",
     "postinstall": "lerna bootstrap"
   },
   "author": "oliver.ross@hotmail.com",

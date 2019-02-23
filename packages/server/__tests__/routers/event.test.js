@@ -66,15 +66,15 @@ it('sets a route for /', () => {
   expect(express.Router.route).toHaveBeenCalledWith('/')
 })
 
-// it('sets a route for /:aggregateId', () => {
-//   expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId')
-// })
+it('sets a route for /:aggregateId', () => {
+  expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId')
+})
 //
 // it('sets a route for /:aggregateId/count', () => {
 //   expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId/count')
 // })
 
-describe('GET /', () => {
+describe('"GET /" for querying events', () => {
   describe('with a "query" querystring parameter', () => {
     const query = 'some compressed query'
 
@@ -197,6 +197,175 @@ describe('GET /', () => {
 
     it('text is "no query parameter found"', () => {
       expect(response.text).toBe('no query parameter found')
+    })
+  })
+})
+
+describe('"GET /:aggregateId" for getting events for an aggregate', () => {
+  const aggregateId = `aggregate-${Date.now()}`
+
+  const requestAggregateVersion = (id, version) => request(app)
+    .get(`/${id}${typeof (version) === 'undefined' ? '' : `?version=${version}`}`)
+    .then(res => {
+      response = res
+      return response
+    })
+
+  beforeAll(() => {
+    forceFindRejection = false
+    foundEvents = [
+      { ...createdEvent, version: 0 },
+      { ...createdEvent, version: 1 },
+      { ...createdEvent, version: 2 }
+    ]
+    return requestAggregateVersion(aggregateId)
+  })
+
+  it('finds all events for the aggregateId', () => {
+    expect(mockModel.find).toHaveBeenCalledWith(
+      expect.objectContaining({ aggregateId })
+    )
+  })
+
+  describe('with no version parameter', () => {
+    describe('if some events are found', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        return requestAggregateVersion(aggregateId)
+      })
+
+      it('status is 200', () => {
+        expect(response.statusCode).toBe(200)
+      })
+
+      it('body is array of all found events', () => {
+        expect(response.body).toEqual(foundEvents)
+      })
+    })
+    describe('if no events are found', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        foundEvents = []
+        return requestAggregateVersion(aggregateId)
+      })
+
+      it('status is 404', () => {
+        expect(response.statusCode).toBe(404)
+      })
+
+      it('body is an empty array', () => {
+        expect(response.body).toEqual([])
+      })
+    })
+    describe('if there is an error finding events', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        forceFindRejection = true
+        return requestAggregateVersion(aggregateId)
+      })
+
+      it('status is 500', () => {
+        expect(response.statusCode).toBe(500)
+      })
+
+      it('console.errors', () => {
+        expect(console.error).toHaveBeenCalledWith(errorString)
+      })
+
+      it('text is the stringified error', () => {
+        expect(response.text).toBe(errorString)
+      })
+    })
+  })
+  describe('with a version parameter', () => {
+    let version = 2
+
+    beforeAll(() => {
+      forceFindRejection = false
+      foundEvents = [
+        { ...createdEvent, version: 0 },
+        { ...createdEvent, version: 1 },
+        { ...createdEvent, version: 2 }
+      ]
+      return requestAggregateVersion(aggregateId, version)
+    })
+
+    it('finds all events with a version less than the version parameter', () => {
+      expect(mockModel.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          version: { $lte: version }
+        })
+      )
+    })
+
+    describe('if the version isnt an integer', () => {
+      const parseErrorMessage = 'Error: version is not an integer'
+
+      beforeAll(() => {
+        jest.clearAllMocks()
+        return requestAggregateVersion(aggregateId, 'the moon')
+      })
+
+      it('status is 500', () => {
+        expect(response.statusCode).toBe(500)
+      })
+
+      it('console.errors', () => {
+        expect(console.error).toHaveBeenCalledWith(parseErrorMessage)
+      })
+
+      it(`text is "${parseErrorMessage}"`, () => {
+        expect(response.text).toBe(parseErrorMessage)
+      })
+    })
+
+    describe('if some events are found', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        return requestAggregateVersion(aggregateId, version)
+      })
+
+      it('status is 200', () => {
+        expect(response.statusCode).toBe(200)
+      })
+
+      it('body is array of all found events', () => {
+        expect(response.body).toEqual(foundEvents)
+      })
+    })
+    describe('if no events are found', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        foundEvents = []
+        return requestAggregateVersion(aggregateId, version)
+      })
+
+      it('status is 404', () => {
+        expect(response.statusCode).toBe(404)
+      })
+
+      it('body is an empty array', () => {
+        expect(response.body).toEqual([])
+      })
+    })
+    describe('if there is an error finding events', () => {
+      beforeAll(() => {
+        jest.clearAllMocks()
+        forceFindRejection = true
+        return requestAggregateVersion(aggregateId, version)
+      })
+
+      it('status is 500', () => {
+        expect(response.statusCode).toBe(500)
+      })
+
+      it('console.errors', () => {
+        expect(console.error).toHaveBeenCalledWith(errorString)
+      })
+
+      it('text is the stringified error', () => {
+        expect(response.text).toBe(errorString)
+      })
     })
   })
 })
