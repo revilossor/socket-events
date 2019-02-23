@@ -1,5 +1,14 @@
 version: '3'
 services:
+  server:
+    build:
+      context: ./packages/server
+    volumes:
+      - ./packages/server:/app
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
   mongo:
     image: mongo:latest
     environment:

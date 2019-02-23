@@ -7,6 +7,14 @@ use the correct version of node:
 ```bash
 nvm use
 ```
+## Running it
+
+you'll need docker, and docker compose.
+
+```bash
+npm start
+npm stop
+```
 
 **installing dependencies**
 

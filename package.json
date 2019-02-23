@@ -4,7 +4,7 @@
   "description": "event sourcing with sockets",
   "main": "index.js",
   "scripts": {
-    "start": "docker-compose up",
+    "start": "docker-compose up --build",
     "stop": "docker-compose down",
     "lint": "standard",
     "unit": "jest",
