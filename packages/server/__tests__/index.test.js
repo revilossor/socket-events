@@ -7,12 +7,9 @@ beforeAll(() => {
 })
 
 describe('starts the server', () => {
-  const calledWithProp = prop => {
-    const key = Object.keys(prop)[0]
-    it(`"${key}" is "${prop[key]}"`, () => {
-      expect(server.start).toHaveBeenCalledWith(expect.objectContaining(prop))
-    })
-  }
-
-  calledWithProp({ port: 8080 })
+  it(`"port" is "8080"`, () => {
+    expect(server.start).toHaveBeenCalledWith(
+      expect.objectContaining({ port: 8080 })
+    )
+  })
 })
