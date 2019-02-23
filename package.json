@@ -8,7 +8,7 @@
     "stop": "docker-compose down",
     "lint": "standard",
     "unit": "jest",
-    "mutation": "echo mutation",
+    "mutation": "lerna run --stream mutation",
     "integration": "lerna run --stream integration",
     "audit": "npm audit && lerna exec --stream npm audit",
     "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
@@ -23,7 +23,9 @@
     "nodemon": "^1.18.10",
     "standard": "^12.0.1",
     "stryker": "^0.35.1",
-    "stryker-api": "^0.24.1"
+    "stryker-api": "^0.24.1",
+    "stryker-javascript-mutator": "^0.14.1",
+    "stryker-jest-runner": "^1.4.1"
   },
   "standard": {
     "ignore": [],

@@ -14,7 +14,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "mutation": "stryker run"
   },
   "dependencies": {
     "express": "^4.16.4"
