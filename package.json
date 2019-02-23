@@ -11,7 +11,7 @@
     "mutation": "lerna run --stream mutation",
     "integration": "lerna run --stream integration",
     "audit": "npm audit && lerna exec --stream npm audit",
-    "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
+    "test": "npm run lint && npm run unit && npm run mutation && npm run integration",
     "watch": "npm run unit -- --watch --collectCoverage=false"
   },
   "author": "oliver.ross@hotmail.com",
@@ -44,7 +44,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm t",
-      "pre-push": "npm t"
+      "pre-push": "npm t && npm run audit"
     }
   }
 }
