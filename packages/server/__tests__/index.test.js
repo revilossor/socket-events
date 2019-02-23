@@ -15,5 +15,4 @@ describe('starts the server', () => {
   }
 
   calledWithProp({ port: 8080 })
-
 })

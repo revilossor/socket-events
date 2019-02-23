@@ -28,6 +28,8 @@
   "standard": {
     "ignore": [],
     "globals": [
+      "jest",
+      "beforeAll",
       "describe",
       "it",
       "expect"
