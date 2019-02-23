@@ -53,7 +53,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run unit -- --verbose=true --onlyChanged",
+      "pre-commit": "lint-staged && npm run unit -- --verbose=true",
       "pre-push": "npm t"
     }
   },
