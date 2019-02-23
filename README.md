@@ -22,8 +22,6 @@ npm stop
 npm i
 ```
 
-you'll need docker and docker-compose too!
-
 **creating a package**
 
 ```bash
