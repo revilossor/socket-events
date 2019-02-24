@@ -19,36 +19,45 @@ beforeAll(() => {
   store = require('../lib/store')
 })
 
-describe('connects', () => {
-  it('with the correct uri', () => {
-    expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
+describe('connect', () => {
+  let returnedThing
+
+  beforeAll(() => {
+    returnedThing = store.connect(uri)
   })
-  it('auto reconnects', () => {
-    expect(mockMongoose.connect).toHaveBeenCalledWith(expect.anything(), {
-      server: expect.objectContaining({
-        auto_reconnect: true
+
+  it('returns a promise', () => {
+    expect(returnedThing).toBeInstanceOf(Promise)
+  })
+
+  describe('connects', () => {
+    it('with the correct uri', () => {
+      expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
+    })
+    it('auto reconnects', () => {
+      expect(mockMongoose.connect).toHaveBeenCalledWith(expect.anything(), {
+        server: expect.objectContaining({
+          auto_reconnect: true
+        })
       })
     })
   })
-})
 
-it('returns a promise', () => {
-  expect(store).toBeInstanceOf(Promise)
-})
+  describe('when connection is open', () => {
+    beforeAll(async () => {
+      console.log.mockClear()
+      handlers.open()
+      await returnedThing
+    })
 
-describe('when connection is open', () => {
-  beforeAll(() => {
-    console.log.mockClear()
-    handlers.open()
+    it('logs', () => {
+      expect(console.log).toHaveBeenCalledWith(`connection opened!`)
+    })
+
+    it('promise is resolved', () =>
+      returnedThing.then(() => expect(true).toBe(true))
+    )
   })
-
-  it('logs', () => {
-    expect(console.log).toHaveBeenCalledWith(`connection opened!`)
-  })
-
-  it('promise is resolved', () =>
-    store.then(() => expect(true).toBe(true))
-  )
 })
 
 it('logs when connecting', () => {

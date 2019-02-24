@@ -1,5 +1,11 @@
 const server = require('./server')
+const store = require('./store')
 
-server.start({
-  port: 8080
-})
+const start = async () => {
+  await store.connect('mongodb://store:27017/server')
+  server.start({
+    port: 8080
+  })
+}
+
+start()

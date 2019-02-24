@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
-const uri = 'mongodb://store:27017/server'
+let connectionUri
 
 mongoose.Promise = global.Promise
 const db = mongoose.connection
 
 db.on('connecting', () => {
-  console.log(`connecting to ${uri}`)
+  console.log(`connecting to ${connectionUri}`)
 })
 db.on('error', err => {
   console.error(`error connecting: ${err}`)
@@ -20,12 +20,12 @@ db.on('reconnected', () => {
 })
 db.on('disconnected', () => {
   console.log('disconnected!')
-  mongoose.connect(uri, { server: { auto_reconnect: true } })
+  mongoose.connect(connectionUri, { server: { auto_reconnect: true } })
 })
 
-mongoose.connect(uri, { server: { auto_reconnect: true } })
-
-module.exports = new Promise((resolve, reject) => {
+module.exports.connect = uri => new Promise((resolve, reject) => {
+  connectionUri = uri
+  mongoose.connect(connectionUri, { server: { auto_reconnect: true } })
   db.once('open', () => {
     console.log('connection opened!')
     resolve()

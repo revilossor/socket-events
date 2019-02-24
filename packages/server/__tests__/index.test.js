@@ -2,8 +2,22 @@ const server = require('../lib/server')
 
 jest.mock('../lib/server')
 
+const uri = 'mongodb://store:27017/server' // TODO envs for config?
+
+const mockStore = {
+  connect: jest.fn(() => Promise.resolve())
+}
+
+jest.mock('../lib/store', () => mockStore)
+
 beforeAll(() => {
   require('../lib/index')
+})
+
+describe('connects to the store', () => {
+  it(`uri is "${uri}"`, () => {
+    expect(mockStore.connect).toHaveBeenCalledWith(uri)
+  })
 })
 
 describe('starts the server', () => {
