@@ -9,11 +9,12 @@
     "lint": "standard",
     "unit": "jest",
     "mutation": "lerna run --stream mutation",
-    "integration": "lerna run --stream integration --parallel",
-    "audit": "npm audit && lerna exec --stream npm audit --parallel",
+    "integration": "lerna run --stream --parallel integration",
+    "audit": "npm audit && lerna exec --stream --parallel npm audit",
     "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
     "watch": "npm run unit -- --watch --collectCoverage=false --verbose=true",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "publish": "lerna publish fromGit"
   },
   "author": "oliver.ross@hotmail.com",
   "license": "ISC",
@@ -58,7 +59,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run unit",
-      "pre-push": "npm t && lerna publish from-git"
+      "pre-push": "npm t && npm run publish"
     }
   },
   "lint-staged": {
@@ -66,8 +67,5 @@
       "standard --fix",
       "git add"
     ]
-  },
-  "dependencies": {
-    "body-parser": "^1.18.3"
   }
 }
