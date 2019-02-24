@@ -9,7 +9,7 @@
     "lint": "standard",
     "unit": "jest",
     "mutation": "lerna run --stream mutation",
-    "preintegration": "npm start",
+    "preintegration": "npm start -- -d && sleep 5",
     "integration": "lerna run --stream --parallel integration",
     "preintegration": "npm stop",
     "audit": "npm audit && lerna exec --stream --parallel npm audit",
