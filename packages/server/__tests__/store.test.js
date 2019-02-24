@@ -7,15 +7,16 @@ const mockMongoose = {
   connect: jest.fn(),
   disconnect: jest.fn()
 }
-const uri = 'mongodb://store:27017/server'
+const uri = 'mongodb://store:27017/events'
 
 jest.mock('mongoose', () => mockMongoose)
+
+jest.useFakeTimers()
 
 let store
 
 beforeAll(() => {
   console.log = jest.fn()
-  console.error = jest.fn()
   store = require('../lib/store')
 })
 
@@ -33,13 +34,6 @@ describe('connect', () => {
   describe('connects', () => {
     it('with the correct uri', () => {
       expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
-    })
-    it('auto reconnects', () => {
-      expect(mockMongoose.connect).toHaveBeenCalledWith(expect.anything(), {
-        server: expect.objectContaining({
-          auto_reconnect: true
-        })
-      })
     })
   })
 
@@ -60,38 +54,12 @@ describe('connect', () => {
   })
 })
 
-it('logs when connecting', () => {
-  console.log.mockClear()
-  expect(handlers.connecting).toBeDefined()
-  handlers.connecting()
-  expect(console.log).toHaveBeenCalledWith(`connecting to ${uri}`)
-})
-
-it('logs when connected', () => {
-  console.log.mockClear()
-  expect(handlers.connected).toBeDefined()
-  handlers.connected()
-  expect(console.log).toHaveBeenCalledWith(`connected!`)
-})
-
-it('logs when reconnected', () => {
-  console.log.mockClear()
-  expect(handlers.reconnected).toBeDefined()
-  handlers.reconnected()
-  expect(console.log).toHaveBeenCalledWith(`reconnected!`)
-})
-
 describe('on error', () => {
   const error = new Error('mock error')
 
   beforeAll(() => {
-    console.error.mockClear()
     mockMongoose.disconnect.mockClear()
     handlers.error(error)
-  })
-
-  it('error logs', () => {
-    expect(console.error).toHaveBeenCalledWith(`error connecting: ${error}`)
   })
 
   it('disconnects', () => {
@@ -101,25 +69,19 @@ describe('on error', () => {
 
 describe('on disconnect', () => {
   beforeAll(() => {
-    console.log.mockClear()
     mockMongoose.connect.mockClear()
     handlers.disconnected()
   })
 
-  it('logs', () => {
-    expect(console.log).toHaveBeenCalledWith(`disconnected!`)
-  })
-
   describe('connects again', () => {
-    it('with the correct uri', () => {
-      expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
+    it('after 1 second', () => {
+      expect(setTimeout).toHaveBeenCalledTimes(1)
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000)
     })
-    it('auto reconnects', () => {
-      expect(mockMongoose.connect).toHaveBeenCalledWith(expect.anything(), {
-        server: expect.objectContaining({
-          auto_reconnect: true
-        })
-      })
+
+    it('with the correct uri', () => {
+      jest.runAllTimers()
+      expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
     })
   })
 })

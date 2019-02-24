@@ -5,27 +5,18 @@ let connectionUri
 mongoose.Promise = global.Promise
 const db = mongoose.connection
 
-db.on('connecting', () => {
-  console.log(`connecting to ${connectionUri}`)
-})
-db.on('error', err => {
-  console.error(`error connecting: ${err}`)
+db.on('error', () => {
   mongoose.disconnect()
 })
-db.on('connected', () => {
-  console.log('connected!')
-})
-db.on('reconnected', () => {
-  console.log('reconnected!')
-})
 db.on('disconnected', () => {
-  console.log('disconnected!')
-  mongoose.connect(connectionUri, { server: { auto_reconnect: true } })
+  setTimeout(() => {
+    mongoose.connect(connectionUri, { useNewUrlParser: true })
+  }, 1000)
 })
 
 module.exports.connect = uri => new Promise((resolve, reject) => {
   connectionUri = uri
-  mongoose.connect(connectionUri, { server: { auto_reconnect: true } })
+  mongoose.connect(connectionUri, { useNewUrlParser: true })
   db.once('open', () => {
     console.log('connection opened!')
     resolve()

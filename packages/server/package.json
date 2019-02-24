@@ -2,7 +2,7 @@
   "name": "revilossor-socket-events-server",
   "private": true,
   "version": "0.0.0",
-  "description": "api for socket-events",
+  "description": "server for socket-events",
   "repository": "https://github.com/revilossor/socket-events",
   "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",
   "license": "ISC",

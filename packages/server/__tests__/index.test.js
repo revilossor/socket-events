@@ -2,7 +2,7 @@ const server = require('../lib/server')
 
 jest.mock('../lib/server')
 
-const uri = 'mongodb://store:27017/server' // TODO envs for config?
+const uri = 'mongodb://store:27017/events' // TODO envs for config?
 
 const mockStore = {
   connect: jest.fn(() => Promise.resolve())

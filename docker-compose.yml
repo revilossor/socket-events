@@ -6,7 +6,7 @@ services:
     volumes:
       - ./packages/server:/app
     depends_on:
-      - mongo
+      - store
     ports:
       - "8080:8080"
   store:
