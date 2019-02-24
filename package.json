@@ -1,16 +1,16 @@
 {
-  "name": "socket-events",
+  "name": "revilossor-socket-events-monorepo",
   "version": "1.0.0",
-  "description": "event sourcing with sockets",
-  "main": "index.js",
+  "description": "event sourcing with sockets monorepo",
+  "repository": "https://github.com/revilossor/socket-events",
   "scripts": {
     "start": "docker-compose up --build",
     "stop": "docker-compose down",
     "lint": "standard",
     "unit": "jest",
     "mutation": "lerna run --stream mutation",
-    "integration": "lerna run --stream integration",
-    "audit": "npm audit && lerna exec --stream npm audit",
+    "integration": "lerna run --stream integration --parallel",
+    "audit": "npm audit && lerna exec --stream npm audit --parallel",
     "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
     "watch": "npm run unit -- --watch --collectCoverage=false --verbose=true",
     "postinstall": "lerna bootstrap"
@@ -28,6 +28,10 @@
     "stryker-javascript-mutator": "^0.14.1",
     "stryker-jest-runner": "^1.4.1",
     "supertest": "^3.4.2"
+  },
+  "engines": {
+    "node": "^11.10.0",
+    "npm": ">= 6.7.0"
   },
   "standard": {
     "ignore": [],
@@ -54,7 +58,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run unit",
-      "pre-push": "npm t"
+      "pre-push": "npm t && lerna publish from-git"
     }
   },
   "lint-staged": {
