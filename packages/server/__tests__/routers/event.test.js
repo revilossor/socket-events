@@ -51,9 +51,25 @@ const mockModel = {
 
 jest.mock('../../lib/models/event', () => mockModel)
 
+let parsedBody = {
+  type: 'some type',
+  data: 'some data'
+}
+
+const mockJsonParser = (req, res, next) => {
+  req.body = parsedBody
+  next()
+}
+
+const mockBodyParser = {
+  json: jest.fn().mockReturnValue(mockJsonParser)
+}
+
 beforeAll(() => {
   console.error = jest.fn()
   jest.spyOn(express.Router, 'route')
+  jest.spyOn(express.Router, 'use')
+  jest.mock('body-parser', () => mockBodyParser)
   app = express()
   app.use('/', require('../../lib/routers/event'))
 })
@@ -73,6 +89,11 @@ it('sets a route for /:aggregateId', () => {
 // it('sets a route for /:aggregateId/count', () => {
 //   expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId/count')
 // })
+
+it('parses json', () => {
+  expect(mockBodyParser.json).toHaveBeenCalled()
+  expect(express.Router.use).toHaveBeenCalledWith(mockJsonParser)
+})
 
 describe('"GET /" for querying events', () => {
   describe('with a "query" querystring parameter', () => {
@@ -366,6 +387,117 @@ describe('"GET /:aggregateId" for getting events for an aggregate', () => {
       it('text is the stringified error', () => {
         expect(response.text).toBe(errorString)
       })
+    })
+  })
+})
+
+describe.only('"POST /:aggregateId" for adding events', () => {
+  const aggregateId = `aggregate-${Date.now()}`
+  const event = {
+    type: 'mock event type',
+    data: 'mock event data'
+  }
+  const invalidMessage = 'invalid event ( it shouild be { type: <some_string>, data: <some_optional_data> } only )'
+
+  const requestPostToAggregate = (id, body) => request(app)
+    .post(`/${id}`)
+    .send({
+      aggregateId: id,
+      body
+    })
+    .then(res => {
+      response = res
+      return response
+    })
+
+  beforeAll(() => {
+    forceCreateRejection = false
+    return requestPostToAggregate(aggregateId, event)
+  })
+
+  describe('creates an event', () => {
+    it('with the aggregateId', () => {
+      expect(mockModel.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          aggregateId
+        })
+      )
+    })
+    it('with the parsed body', () => {
+      expect(mockModel.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: parsedBody
+        })
+      )
+    })
+  })
+
+  it('status is 200', () => {
+    expect(response.statusCode).toBe(200)
+  })
+
+  it('body is the created event', () => {
+    expect(response.body).toEqual(createdEvent)
+  })
+
+  describe('if there is no type', () => {
+    beforeAll(() => {
+      jest.clearAllMocks()
+      parsedBody = { data: 'some data' }
+      return requestPostToAggregate(aggregateId, event)
+    })
+
+    it('status is 400', () => {
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('console.errors', () => {
+      expect(console.error).toHaveBeenCalledWith(invalidMessage)
+    })
+
+    it(`text is "${invalidMessage}"`, () => {
+      expect(response.text).toBe(invalidMessage)
+    })
+  })
+
+  describe('if there are additional keys in the event', () => {
+    beforeAll(() => {
+      jest.clearAllMocks()
+      parsedBody = { type: 'some type', data: 'some data', extra: 'the moon' }
+      return requestPostToAggregate(aggregateId, event)
+    })
+
+    it('status is 400', () => {
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('console.errors', () => {
+      expect(console.error).toHaveBeenCalledWith(invalidMessage)
+    })
+
+    it(`text is "${invalidMessage}"`, () => {
+      expect(response.text).toBe(invalidMessage)
+    })
+  })
+
+  describe('if there is an error creating the event', () => {
+    beforeAll(() => {
+      jest.clearAllMocks()
+      forceCreateRejection = true
+      parsedBody = { type: 'some type', data: 'some data' }
+      return requestPostToAggregate(aggregateId, event)
+    })
+
+    it('status is 500', () => {
+      expect(response.statusCode).toBe(500)
+    })
+
+    it('console.errors', () => {
+      expect(console.error).toHaveBeenCalledWith(errorString)
+    })
+
+    it(`text is the error string`, () => {
+      expect(response.text).toBe(errorString)
     })
   })
 })
