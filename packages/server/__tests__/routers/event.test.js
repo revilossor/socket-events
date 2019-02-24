@@ -85,10 +85,10 @@ it('sets a route for /', () => {
 it('sets a route for /:aggregateId', () => {
   expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId')
 })
-//
-// it('sets a route for /:aggregateId/count', () => {
-//   expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId/count')
-// })
+
+it('sets a route for /:aggregateId/version', () => {
+  expect(express.Router.route).toHaveBeenCalledWith('/:aggregateId/version')
+})
 
 it('parses json', () => {
   expect(mockBodyParser.json).toHaveBeenCalled()
@@ -502,4 +502,50 @@ describe('"POST /:aggregateId" for adding events', () => {
   })
 })
 
-// describe('""')
+describe('"GET /:aggregateId/version"', () => {
+  const aggregateId = `aggregate-${Date.now()}`
+
+  const requestAggregateVersion = id => request(app)
+    .get(`/${id}/version`)
+    .then(res => {
+      response = res
+      return response
+    })
+
+  beforeAll(() => {
+    jest.clearAllMocks()
+    forceCountRejection = false
+    return requestAggregateVersion(aggregateId)
+  })
+
+  it('gets the count of events for that aggregateId', () => {
+    expect(mockModel.count).toHaveBeenCalledWith(aggregateId)
+  })
+
+  it('status is 200', () => {
+    expect(response.statusCode).toBe(200)
+  })
+
+  it('text is the value returned from the count', () => {
+    expect(response.text).toBe(`${countEventsTotal}`)
+  })
+
+  describe('when there is an error getting the count', () => {
+    beforeAll(() => {
+      forceCountRejection = true
+      return requestAggregateVersion(aggregateId)
+    })
+
+    it('status is 500', () => {
+      expect(response.statusCode).toBe(500)
+    })
+
+    it('console.errors', () => {
+      expect(console.error).toHaveBeenCalledWith(errorString)
+    })
+
+    it('text is the stringified error', () => {
+      expect(response.text).toBe(errorString)
+    })
+  })
+})

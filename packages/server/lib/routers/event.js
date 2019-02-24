@@ -78,4 +78,13 @@ router.route('/:aggregateId')
     })
   })
 
+router.route('/:aggregateId/version')
+  .get(async (req, res) => {
+    catchAnd500(res, async () => {
+      const { aggregateId } = req.params
+      const version = await Event.count(aggregateId)
+      return res.json(version)
+    })
+  })
+
 module.exports = router
