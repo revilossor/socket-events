@@ -391,7 +391,7 @@ describe('"GET /:aggregateId" for getting events for an aggregate', () => {
   })
 })
 
-describe.only('"POST /:aggregateId" for adding events', () => {
+describe('"POST /:aggregateId" for adding events', () => {
   const aggregateId = `aggregate-${Date.now()}`
   const event = {
     type: 'mock event type',
