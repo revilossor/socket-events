@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Event = mongoose.model('Event', new mongoose.Schema({
   aggregateId: mongoose.Schema.Types.String,
   body: {
-    type: mongoose.Schema.Types.String,
+    event: mongoose.Schema.Types.String,
     data: mongoose.Schema.Types.Mixed
   },
   version: mongoose.Schema.Types.Number
@@ -12,8 +12,12 @@ const Event = mongoose.model('Event', new mongoose.Schema({
 const create = async item => {
   // TODO validation - either separate schema validation package or mongoose validation...
   const version = await count(item.aggregateId)
+  const event = {
+    ...item,
+    version
+  }
   return new Promise((resolve, reject) => {
-    new Event({ ...item, version }).save((err, doc) => {
+    new Event(event).save((err, doc) => {
       err ? reject(err) : resolve(doc)
     })
   })

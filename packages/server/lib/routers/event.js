@@ -21,12 +21,12 @@ const findAndRespond = async (comparator, res) => {
     : res.status(404).json([])
 }
 
-const permittedBodyKeys = [ 'type', 'data' ]
-const invalidEventMessage = 'invalid event ( it shouild be { type: <some_string>, data: <some_optional_data> } only )'
+const permittedBodyKeys = [ 'event', 'data' ]
+const invalidEventMessage = 'invalid event ( it shouild be { event: <some_string>, data: <some_optional_data> } only )'
 
 router.use(bodyParser.json())
 
-router.route('/')
+router.route('/') // TODO postman test for this with encrypted data
   .get(async (req, res) => {
     catchAnd500(res, async () => {
       const { query } = req.query
@@ -67,7 +67,7 @@ router.route('/:aggregateId')
       const { aggregateId } = req.params
       const body = req.body
 
-      if (!body || !body.type || Object.keys(body).some(key => !permittedBodyKeys.includes(key))) { // TODO validate properly!!
+      if (!body || !body.event || Object.keys(body).some(key => !permittedBodyKeys.includes(key))) { // TODO validate properly!!
         console.error(invalidEventMessage)
         return res.status(400).send(invalidEventMessage)
       }

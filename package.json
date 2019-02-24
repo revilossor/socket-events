@@ -9,11 +9,13 @@
     "lint": "standard",
     "unit": "jest",
     "mutation": "lerna run --stream mutation",
+    "preintegration": "npm start",
     "integration": "lerna run --stream --parallel integration",
+    "preintegration": "npm stop",
     "audit": "npm audit && lerna exec --stream --parallel npm audit",
     "test": "npm run lint && npm run unit && npm run mutation && npm run integration && npm run audit",
     "watch": "npm run unit -- --watch --collectCoverage=false --verbose=true",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap --hoist"
   },
   "author": "oliver.ross@hotmail.com",
   "license": "ISC",
@@ -22,6 +24,7 @@
     "jest": "^24.1.0",
     "lerna": "^3.13.0",
     "lint-staged": "^8.1.4",
+    "newman": "^4.4.0",
     "standard": "^12.0.1",
     "stryker": "^0.35.1",
     "stryker-api": "^0.24.1",

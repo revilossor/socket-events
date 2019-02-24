@@ -52,7 +52,7 @@ const mockModel = {
 jest.mock('../../lib/models/event', () => mockModel)
 
 let parsedBody = {
-  type: 'some type',
+  event: 'some event',
   data: 'some data'
 }
 
@@ -394,10 +394,10 @@ describe('"GET /:aggregateId" for getting events for an aggregate', () => {
 describe('"POST /:aggregateId" for adding events', () => {
   const aggregateId = `aggregate-${Date.now()}`
   const event = {
-    type: 'mock event type',
+    event: 'mock event type',
     data: 'mock event data'
   }
-  const invalidMessage = 'invalid event ( it shouild be { type: <some_string>, data: <some_optional_data> } only )'
+  const invalidMessage = 'invalid event ( it shouild be { event: <some_string>, data: <some_optional_data> } only )'
 
   const requestPostToAggregate = (id, body) => request(app)
     .post(`/${id}`)
@@ -440,7 +440,7 @@ describe('"POST /:aggregateId" for adding events', () => {
     expect(response.body).toEqual(createdEvent)
   })
 
-  describe('if there is no type', () => {
+  describe('if there is no event', () => {
     beforeAll(() => {
       jest.clearAllMocks()
       parsedBody = { data: 'some data' }
@@ -484,7 +484,7 @@ describe('"POST /:aggregateId" for adding events', () => {
     beforeAll(() => {
       jest.clearAllMocks()
       forceCreateRejection = true
-      parsedBody = { type: 'some type', data: 'some data' }
+      parsedBody = { event: 'some type', data: 'some data' }
       return requestPostToAggregate(aggregateId, event)
     })
 

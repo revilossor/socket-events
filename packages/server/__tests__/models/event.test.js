@@ -60,8 +60,8 @@ describe('creates a mongoose schema', () => {
     expect(schema.version).toBe(MockSchema.Types.Number)
   })
   describe('with a body', () => {
-    it('with a type that should be a string type', () => {
-      expect(schema.body.type).toBe(MockSchema.Types.String)
+    it('with an event that should be a string type', () => {
+      expect(schema.body.event).toBe(MockSchema.Types.String)
     })
     it('with a data that should be a mixed type', () => {
       expect(schema.body.data).toBe(MockSchema.Types.Mixed)
@@ -82,7 +82,7 @@ describe('create', () => {
   const argument = {
     aggregateId: `aggregate-${Date.now()}`,
     body: {
-      type: 'some aggregate event type',
+      event: 'some aggregate event type',
       data: {
         numberOfKittens: 'over nine thousand'
       }
