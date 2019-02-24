@@ -27,3 +27,7 @@ npm i
 ```bash
 npx lerna create <package_name>
 ```
+
+## Integration tests
+
+youll need docker-compose up before running these

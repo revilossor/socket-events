@@ -11,7 +11,7 @@
   "license": "ISC",
   "main": "lib",
   "scripts": {
-    "start": "nodemon lib --verbose",
+    "start": "nodemon lib",
     "mutation": "stryker run",
     "integration": "newman run .postman_collection.json"
   },
