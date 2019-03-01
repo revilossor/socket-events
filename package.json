@@ -13,7 +13,8 @@
     "audit": "npm audit && lerna exec --stream --parallel npm audit",
     "test": "npm run lint && npm run unit && npm run mutation && npm run audit",
     "watch": "npm run unit -- --watch --collectCoverage=false --verbose=true",
-    "postinstall": "lerna bootstrap --hoist"
+    "postinstall": "lerna bootstrap --hoist",
+    "build": "lerna run --stream --parallel build"
   },
   "author": "oliver.ross@hotmail.com",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "lerna": "^3.13.0",
     "lint-staged": "^8.1.4",
     "newman": "^4.4.0",
+    "rollup": "^1.2.3",
     "standard": "^12.0.1",
     "stryker": "^0.35.1",
     "stryker-api": "^0.24.1",
@@ -41,7 +43,8 @@
       "beforeAll",
       "describe",
       "it",
-      "expect"
+      "expect",
+      "define"
     ]
   },
   "jest": {
