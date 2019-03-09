@@ -13,7 +13,7 @@
   "scripts": {
     "start": "nodemon lib",
     "mutation": "stryker run",
-    "integration": "newman run .postman_collection.json"
+    "integration": "newman run postman.json"
   },
   "dependencies": {
     "express": "^4.16.4",
