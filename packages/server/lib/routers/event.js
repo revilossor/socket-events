@@ -6,7 +6,7 @@ router.route('/:id')
     event
       .find({
         aggregateId: req.params.id,
-        version: req.query.v
+        ...(req.query.hasOwnProperty('v') && { version: req.query.v })
       })
       .then(result => {
         res.status(

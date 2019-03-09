@@ -79,6 +79,16 @@ describe('/:id', () => {
         )
       })
 
+      it('doesnt have a version in the query', () => {
+        const query = mockEvent.find.mock.calls[mockEvent.find.mock.calls.length - 1][0]
+
+        expect(Object.keys(query)).not.toEqual(
+          expect.arrayContaining([
+            'version'
+          ])
+        )
+      })
+
       it('status is 200', () => {
         expect(response.statusCode).toBe(200)
       })
