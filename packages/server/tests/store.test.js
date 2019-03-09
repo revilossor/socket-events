@@ -91,5 +91,14 @@ describe('on disconnect', () => {
       jest.runAllTimers()
       expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
     })
+
+    it('uses the new url parser option', () => {
+      expect(mockMongoose.connect).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          useNewUrlParser: true
+        })
+      )
+    })
   })
 })
