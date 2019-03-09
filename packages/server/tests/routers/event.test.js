@@ -199,4 +199,8 @@ describe('/:id', () => {
       })
     })
   })
+
+  describe('POST', () => {
+
+  })
 })
