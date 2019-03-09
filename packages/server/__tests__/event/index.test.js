@@ -1,13 +1,3 @@
-let schema = {}
-function MockSchema (object) {
-  schema = object
-}
-MockSchema.Types = {
-  String: 'string',
-  Mixed: 'mixed',
-  Number: 'number'
-}
-
 const error = Error('mock error')
 
 const savedEvent = { saved: 'event' }
@@ -39,43 +29,12 @@ MockModel.count = jest.fn((aggregateId, cb) => {
     : cb(undefined, countEventsTotal)
 })
 
-const mockMongoose = {
-  model: jest.fn(() => MockModel),
-  Schema: MockSchema
-}
-
-jest.mock('mongoose', () => mockMongoose)
+jest.mock('../../lib/event/model', () => MockModel)
 
 let Event
 
 beforeAll(() => {
-  Event = require('../../lib/models/event')
-})
-
-describe('creates a mongoose schema', () => {
-  it('with an aggregateId that should be a string type', () => {
-    expect(schema.aggregateId).toBe(MockSchema.Types.String)
-  })
-  it('with a version that should be a number type', () => {
-    expect(schema.version).toBe(MockSchema.Types.Number)
-  })
-  describe('with a body', () => {
-    it('with an event that should be a string type', () => {
-      expect(schema.body.event).toBe(MockSchema.Types.String)
-    })
-    it('with a data that should be a mixed type', () => {
-      expect(schema.body.data).toBe(MockSchema.Types.Mixed)
-    })
-  })
-})
-
-describe('creates a mongoose model', () => {
-  it('called "Event"', () => {
-    expect(mockMongoose.model).toHaveBeenCalledWith('Event', expect.anything())
-  })
-  it('with the schema', () => {
-    expect(mockMongoose.model).toHaveBeenCalledWith(expect.anything(), expect.any(MockSchema))
-  })
+  Event = require('../../lib/event')
 })
 
 describe('create', () => {
