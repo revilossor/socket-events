@@ -35,6 +35,14 @@ describe('connect', () => {
     it('with the correct uri', () => {
       expect(mockMongoose.connect).toHaveBeenCalledWith(uri, expect.anything())
     })
+    it('uses the new url parser option', () => {
+      expect(mockMongoose.connect).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          useNewUrlParser: true
+        })
+      )
+    })
   })
 
   describe('when connection is open', () => {
