@@ -41,6 +41,7 @@
     "globals": [
       "jest",
       "beforeAll",
+      "afterAll",
       "describe",
       "it",
       "expect",
