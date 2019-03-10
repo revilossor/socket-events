@@ -8,6 +8,7 @@
     "url": "git+https://github.com/revilossor/socket-events.git"
   },
   "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",
+  "homepage": "https://github.com/revilossor/socket-events#readme",
   "license": "ISC",
   "main": "lib",
   "scripts": {

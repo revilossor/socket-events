@@ -1,0 +1,18 @@
+{
+  "name": "revilossor-socket-events-aggregate",
+  "private": true,
+  "version": "0.0.0",
+  "description": "client aggregate of events from server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revilossor/socket-events.git"
+  },
+  "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",
+  "homepage": "https://github.com/revilossor/socket-events#readme",
+  "license": "ISC",
+  "main": "dist/Aggregate.js",
+  "browserslist": "> 0.25%, not dead",
+  "scripts": {
+    "build": "rollup -c"
+  }
+}
