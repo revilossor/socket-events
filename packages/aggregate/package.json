@@ -10,7 +10,7 @@
   "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",
   "homepage": "https://github.com/revilossor/socket-events#readme",
   "license": "ISC",
-  "main": "dist/Aggregate.js",
+  "main": "dist/main.js",
   "browserslist": "> 0.25%, not dead",
   "scripts": {
     "mutation": "stryker run",
