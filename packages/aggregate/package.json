@@ -15,5 +15,8 @@
   "scripts": {
     "mutation": "stryker run",
     "build": "rollup -c"
+  },
+  "dependencies": {
+    "socket.io-client": "^2.2.0"
   }
 }

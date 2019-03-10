@@ -1,4 +1,14 @@
-import Aggregate from '../src/Aggregate.js'
+let Aggregate
+
+const mockSocket = {
+  mock: 'socket'
+}
+const mockIo = jest.fn(() => mockSocket)
+
+beforeAll(() => {
+  jest.mock('socket.io-client', () => mockIo)
+  Aggregate = require('../src/Aggregate').default
+})
 
 describe('constructor', () => {
   const url = 'mock url'
@@ -16,5 +26,14 @@ describe('constructor', () => {
 
   it('stores the id', () => {
     expect(instance.id).toBe(id)
+  })
+
+  describe('opens a socket', () => {
+    it('with the url', () => {
+      expect(mockIo).toHaveBeenCalledWith(url)
+    })
+    it('stores it', () => {
+      expect(instance.socket).toBe(mockSocket)
+    })
   })
 })
