@@ -13,6 +13,7 @@
   "main": "dist/Aggregate.js",
   "browserslist": "> 0.25%, not dead",
   "scripts": {
+    "mutation": "stryker run",
     "build": "rollup -c"
   }
 }

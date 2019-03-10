@@ -1,6 +1,7 @@
 class Aggregate {
-  constructor () {
-    console.log('construct!')
+  constructor (url, id) {
+    this.url = url
+    this.id = id
   }
 }
 
