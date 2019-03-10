@@ -36,4 +36,20 @@ describe('constructor', () => {
       expect(instance.socket).toBe(mockSocket)
     })
   })
+
+  it('inits state to null', () => {
+    expect(instance.state).toBe(null)
+  })
 })
+
+// describe('register', () => {
+//   // register an event handler
+// })
+//
+// describe('init', () => {
+//   // inits all events to a version
+// })
+//
+// describe('push', () => {
+//   // adds events
+// })

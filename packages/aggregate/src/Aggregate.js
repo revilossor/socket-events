@@ -5,6 +5,7 @@ class Aggregate {
     this.url = url
     this.id = id
     this.socket = io(url)
+    this.state = null
   }
 }
 
