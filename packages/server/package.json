@@ -19,7 +19,8 @@
     "express": "^4.16.4",
     "json-url": "^2.3.4",
     "mongoose": "^5.4.15",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "socket.io": "^2.2.0"
   },
   "engines": {
     "node": "^11.10.0",

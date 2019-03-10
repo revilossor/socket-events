@@ -15,6 +15,6 @@ COPY lib lib/
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm ci
+RUN npm ci --only=production
 
 CMD npm start
