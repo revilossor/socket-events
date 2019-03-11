@@ -44,11 +44,15 @@ describe('constructor', () => {
   })
 
   it('inits version to null', () => {
-    expect(instance.version).toEqual(0)
+    expect(instance.version).toBe(0)
   })
 
   it('inits handlers to an empty object', () => {
     expect(instance.handlers).toEqual({})
+  })
+
+  it('inits initialized to false', () => {
+    expect(instance.initialized).toBe(false)
   })
 })
 
@@ -77,11 +81,34 @@ describe('deregister', () => {
   })
 })
 
+describe('init', () => {
+  describe('with no version argument', () => {
+    beforeAll(async () => {
+      instance = new Aggregate(url, id)
+      await instance.init()
+    })
+
+    it('sets instance initialized to true', () => {
+      expect(instance.initialized).toBe(true)
+    })
+  })
+})
+
 describe('push', () => {
   const mockEvent = {
     event,
     data
   }
+
+  describe('if the instance has not been initialized', () => {
+    beforeAll(() => {
+      instance = new Aggregate(url, id)
+    })
+
+    it('rejects with an error', async () => {
+      await expect(instance.push(mockEvent)).rejects.toEqual(Error('aggregate not initialized'))
+    })
+  })
 
   describe('if there is a handler for the event', () => {
     const handler = jest.fn((state, data) => `${state} =-> ${data}`)
@@ -89,8 +116,9 @@ describe('push', () => {
     let before
     let after
 
-    beforeAll(() => {
+    beforeAll(async () => {
       instance = new Aggregate(url, id)
+      await instance.init()
     })
 
     beforeAll(async () => {
@@ -125,8 +153,9 @@ describe('push', () => {
   })
 
   describe('if there is no handler for the event', () => {
-    beforeAll(() => {
+    beforeAll(async () => {
       instance = new Aggregate(url, id)
+      await instance.init()
     })
 
     it('doesnt change the state', async () => {
