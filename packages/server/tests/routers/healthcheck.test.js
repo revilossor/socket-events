@@ -16,7 +16,7 @@ it('sets a route for /', () => {
 describe('GET /', () => {
   let response
 
-  beforeAll(() => request(app)
+  beforeAll(async () => request(app)
     .get('/')
     .then(res => {
       response = res

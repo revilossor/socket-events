@@ -74,7 +74,7 @@ describe('create', () => {
   })
 
   describe('returns a promise', () => {
-    describe('resolves with the saved event if the save is a success', async () => {
+    describe('resolves with the saved event if the save is a success', () => {
       let result
 
       beforeAll(async () => {
@@ -111,7 +111,7 @@ describe('find', () => {
     some: 'comparator'
   }
 
-  beforeAll(() => Event.find(argument))
+  beforeAll(async () => Event.find(argument))
 
   it('finds all events with the comparator argument', () => {
     expect(MockModel.find).toHaveBeenCalledWith(argument, expect.anything())
@@ -151,7 +151,7 @@ describe('find', () => {
 describe('count', () => {
   const aggregateId = `aggregate-${Date.now()}`
 
-  beforeAll(() => Event.count(aggregateId))
+  beforeAll(async () => Event.count(aggregateId))
 
   it('counts all events with the aggregateId argument', () => {
     expect(MockModel.countDocuments).toHaveBeenCalledWith({ aggregateId })
