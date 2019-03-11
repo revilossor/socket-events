@@ -3,8 +3,15 @@ const express = require('express')
 const mockHealthcheckRouter = () => {}
 const mockEventRouter = () => {}
 
+const mockError = Error('mock error')
+
+let forceListenError = false
 const mockServer = {
-  listen: jest.fn()
+  listen: jest.fn((port, cb) => {
+    forceListenError
+      ? cb(mockError)
+      : cb()
+  })
 }
 const mockHttp = {
   createServer: jest.fn(() => mockServer)
@@ -63,11 +70,21 @@ describe('start', () => {
     port: 'the moon'
   }
 
-  beforeAll(() => {
-    server.start(options)
+  beforeAll(async () => {
+    await server.start(options)
   })
 
   it('http server listens on the port specified', () => {
-    expect(mockServer.listen).toHaveBeenCalledWith(options.port)
+    expect(mockServer.listen).toHaveBeenCalledWith(options.port, expect.anything())
+  })
+
+  describe('returns a promise', () => {
+    it('resolves when listening', async () => {
+      await expect(server.start(options)).resolves.toBeUndefined()
+    })
+    it('rejects when error listening', async () => {
+      forceListenError = true
+      await expect(server.start(options)).rejects.toEqual(mockError)
+    })
   })
 })
