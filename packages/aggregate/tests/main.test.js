@@ -1,5 +1,16 @@
-import Aggregate from '../src/Aggregate'
 import main from '../src/main'
+
+let Aggregate
+
+const mockSocket = {
+  mock: 'socket'
+}
+const mockIo = jest.fn(() => mockSocket)
+
+beforeAll(() => {
+  jest.mock('socket.io-client', () => mockIo)
+  Aggregate = require('../src/Aggregate').default
+})
 
 const url = 'url'
 const id = 'id'
