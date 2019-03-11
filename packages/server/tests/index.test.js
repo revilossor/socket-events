@@ -1,5 +1,5 @@
 const mockServer = {
-  start: jest.fn()
+  start: jest.fn(() => Promise.resolve())
 }
 jest.mock('../lib/server', () => mockServer)
 
@@ -11,12 +11,22 @@ const mockStore = {
 jest.mock('../lib/store', () => mockStore)
 
 beforeAll(() => {
+  console.log = jest.fn()
   require('../lib/index')
 })
 
 describe('connects to the store', () => {
   it(`uri is "${uri}"`, () => {
     expect(mockStore.connect).toHaveBeenCalledWith(uri)
+  })
+})
+
+describe('logs', () => {
+  it('when the store is connected', () => {
+    expect(console.log).toHaveBeenCalledWith('store connected')
+  })
+  it('when the server is listening', () => {
+    expect(console.log).toHaveBeenCalledWith('server listening')
   })
 })
 
