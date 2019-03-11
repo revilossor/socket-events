@@ -25,15 +25,7 @@ afterAll(() => {
 })
 
 describe('connect', () => {
-  let returnedThing
-
-  beforeAll(() => {
-    returnedThing = store.connect(uri)
-  })
-
-  it('returns a promise', () => {
-    expect(returnedThing).toBeInstanceOf(Promise)
-  })
+  beforeAll(async () => store.connect(uri))
 
   describe('connects', () => {
     it('with the correct uri', () => {
