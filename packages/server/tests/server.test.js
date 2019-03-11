@@ -37,26 +37,26 @@ describe('express app', () => {
   })
 })
 
-// describe('socket.io', () => {
-//   it('creates an http server', () => {
-//     expect(mockHttp.createServer).toHaveBeenCalled()
-//   })
-//   it('creates an io instance', () => {
-//     expect(mockSocketIo).toHaveBeenCalledWith(mockServer)
-//   })
-//   it('listens for connections', () => {
-//     expect(mockIo.on).toHaveBeenCalledWith('connection', expect.any(Function))
-//   })
-//   describe('on client connection', () => {
-//     beforeAll(() => {
-//       console.log = jest.fn()
-//       mockOnHandlers.connection()
-//     })
-//     it('logs', () => {
-//       expect(console.log).toHaveBeenCalledWith('user connected!')
-//     })
-//   })
-// })
+describe('socket.io', () => {
+  it('creates an http server', () => {
+    expect(mockHttp.createServer).toHaveBeenCalled()
+  })
+  it('creates an io instance', () => {
+    expect(mockSocketIo).toHaveBeenCalledWith(mockServer)
+  })
+  it('listens for connections', () => {
+    expect(mockIo.on).toHaveBeenCalledWith('connection', expect.any(Function))
+  })
+  describe('on client connection', () => {
+    beforeAll(() => {
+      console.log = jest.fn()
+      mockOnHandlers.connection()
+    })
+    it('logs', () => {
+      expect(console.log).toHaveBeenCalledWith('user connected!')
+    })
+  })
+})
 
 describe('start', () => {
   const options = {
