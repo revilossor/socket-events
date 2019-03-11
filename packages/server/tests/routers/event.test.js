@@ -77,7 +77,7 @@ describe('/:id', () => {
   })
 
   describe('GET', () => {
-    const makeRequest = (query = '') => request(app)
+    const makeRequest = async (query = '') => request(app)
       .get(query
         ? `/${aggregateId}?v=${query}`
         : `/${aggregateId}`
@@ -231,7 +231,7 @@ describe('/:id', () => {
   })
 
   describe('POST', () => {
-    const makeRequest = (event, data = {}) => request(app)
+    const makeRequest = async (event, data = {}) => request(app)
       .post(`/${aggregateId}`)
       .send({ event, data })
       .then(res => {
