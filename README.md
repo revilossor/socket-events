@@ -28,6 +28,13 @@ npm i
 npx lerna create <package_name>
 ```
 
+**tailing logs for a service**
+
+```bash
+npm run logs -- <service name, eg server>
+```
+
+
 ## Integration tests
 
 youll need docker-compose up before running these

@@ -1,26 +1,21 @@
 const Event = require('./model')
-const { promisify } = require('util')
 
-const find = promisify(Event.find)
-
-const count = aggregateId => new Promise((resolve, reject) => {
-  Event.count({ aggregateId }, (err, count) => {
-    err ? reject(err) : resolve(count)
-  })
-})
+const count = aggregateId => Event.countDocuments({ aggregateId })
 
 const create = async item => {
-  const version = await count(item.aggregateId)
+  const version = await count(item.aggregateId) // TODO might be a way to get mongo to do this, and resolve conflicts...
   const event = new Event({
     ...item,
     version
   })
-  const save = promisify(event.save)
-  return save()
+  const { body } = await event.save()
+  return { body, version }
 }
 
 module.exports = {
   create,
-  find,
+  find: query => {
+    return Event.find(query, { _id: 0, __v: 0, aggregateId: 0 })
+  },
   count
 }

@@ -10,11 +10,11 @@ RUN apt-get install -y gcc g++ make
 
 WORKDIR /app
 
-COPY lib lib/
-
 COPY package.json .
 COPY package-lock.json .
 
 RUN npm ci --only=production
+
+COPY lib lib/
 
 CMD npm start

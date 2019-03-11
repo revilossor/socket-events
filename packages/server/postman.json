@@ -44,6 +44,1111 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "add valid event with string data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body has the correct event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.event).to.eql('add valid event with string data');",
+							"});",
+							"",
+							"pm.test(\"Body has the correct data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.data).to.eql('string data');",
+							"});",
+							"",
+							"pm.test(\"Version is 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.version).to.eql(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event\": \"add valid event with string data\",\n\t\"data\": \"string data\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add valid event with number data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body has the correct event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.event).to.eql('add valid event with number data');",
+							"});",
+							"",
+							"pm.test(\"Body has the correct data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.data).to.eql(42);",
+							"});",
+							"",
+							"pm.test(\"Version is 1\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.version).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event\": \"add valid event with number data\",\n\t\"data\": 42\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add valid event with object data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body has the correct event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.event).to.eql('add valid event with object data');",
+							"});",
+							"",
+							"pm.test(\"Body has the correct data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.data).to.eql({ some: 'object' });",
+							"});",
+							"",
+							"pm.test(\"Version is 2\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.version).to.eql(2);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event\": \"add valid event with object data\",\n\t\"data\": { \"some\": \"object\" }\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add valid event with no data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body has the correct event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.event).to.eql('add valid event with no data');",
+							"});",
+							"",
+							"pm.test(\"There is no data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.body.data).to.eql(undefined);",
+							"});",
+							"",
+							"pm.test(\"Version is 3\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.version).to.eql(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event\": \"add valid event with no data\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add invalid event with no event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"pm.test(\"Body contains validation error\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ValidationError: Event validation failed: body.event: Path `body.event` is required.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"data\": \"add invalid event with no event\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add invalid event with json event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"",
+							"pm.test(\"Body contains validation error\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ValidationError: Event validation failed: body.event: Cast to String failed for value\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event\": { \"an\": \"object\" },\n\t\"data\": \"add invalid event with object event\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add invalid event non json body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"",
+							"pm.test(\"Body contains validation error\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"SyntaxError: Unexpected token n in JSON at position 0\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "not json"
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains four events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(4)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the second event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with number data\",",
+							"                \"data\": 42",
+							"            },",
+							"            \"version\": 1",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the third event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[2]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with object data\",",
+							"                \"data\": {",
+							"                    \"some\": \"object\"",
+							"                }",
+							"            },",
+							"            \"version\": 2",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the fourth event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[3]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with no data\",",
+							"            },",
+							"            \"version\": 3",
+							"        }",
+							"    );",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events version 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains four events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(4)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the second event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with number data\",",
+							"                \"data\": 42",
+							"            },",
+							"            \"version\": 1",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the third event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[2]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with object data\",",
+							"                \"data\": {",
+							"                    \"some\": \"object\"",
+							"                }",
+							"            },",
+							"            \"version\": 2",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the fourth event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[3]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with no data\",",
+							"            },",
+							"            \"version\": 3",
+							"        }",
+							"    );",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events version 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains three events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(3)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the second event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with number data\",",
+							"                \"data\": 42",
+							"            },",
+							"            \"version\": 1",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the third event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[2]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with object data\",",
+							"                \"data\": {",
+							"                    \"some\": \"object\"",
+							"                }",
+							"            },",
+							"            \"version\": 2",
+							"        }",
+							"    );",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events version 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains two events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(2)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the second event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with number data\",",
+							"                \"data\": 42",
+							"            },",
+							"            \"version\": 1",
+							"        }",
+							"    );",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events version 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains one event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(1)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events version 9001",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contains four events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(4)",
+							"});",
+							"",
+							"pm.test(\"Contains the first event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with string data\",",
+							"                \"data\": \"string data\"",
+							"            },",
+							"            \"version\": 0",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the second event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with number data\",",
+							"                \"data\": 42",
+							"            },",
+							"            \"version\": 1",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the third event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[2]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with object data\",",
+							"                \"data\": {",
+							"                    \"some\": \"object\"",
+							"                }",
+							"            },",
+							"            \"version\": 2",
+							"        }",
+							"    );",
+							"});",
+							"",
+							"pm.test(\"Contains the fourth event\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[3]).to.eql(",
+							"        {",
+							"            \"body\": {",
+							"                \"event\": \"add valid event with no data\",",
+							"            },",
+							"            \"version\": 3",
+							"        }",
+							"    );",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=9001",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "9001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events invalid version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"pm.test(\"Body contains validation error\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"CastError: Cast to number failed for value \\\"theMoon\\\" at path \\\"version\\\" for model \\\"Event\\\"\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=theMoon",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "theMoon"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events negative version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Contains no events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(0)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/aggregateId?v=-1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"aggregateId"
+					],
+					"query": [
+						{
+							"key": "v",
+							"value": "-1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get events new aggregate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Contains no events\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(0)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/newAggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"newAggregateId"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

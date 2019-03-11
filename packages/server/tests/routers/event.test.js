@@ -161,13 +161,22 @@ describe('/:id', () => {
     describe('with a version in the querystring', () => {
       beforeAll(async () => makeRequest(version))
 
-      it('finds all events for the aggregateId', () => {
-        expect(mockEvent.find).toHaveBeenCalledWith(
-          expect.objectContaining({
-            aggregateId,
-            version
-          })
-        )
+      describe('finds all events', () => {
+        it('for the aggregateId', () => {
+          expect(mockEvent.find).toHaveBeenCalledWith(
+            expect.objectContaining({
+              aggregateId
+            })
+          )
+        })
+
+        it('less than or equal to the version', () => {
+          expect(mockEvent.find).toHaveBeenCalledWith(
+            expect.objectContaining({
+              version: { $lte: version }
+            })
+          )
+        })
       })
 
       it('status is 200', () => {

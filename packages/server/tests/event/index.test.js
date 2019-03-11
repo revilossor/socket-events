@@ -1,6 +1,10 @@
 const error = Error('mock error')
 
-const savedEvent = { saved: 'event' }
+const savedEvent = {
+  body: { saved: 'event' },
+  _id: 0,
+  __v: 0
+}
 const foundEvents = [ { ...savedEvent }, { ...savedEvent }, { ...savedEvent } ]
 const countEventsTotal = 42
 
@@ -13,21 +17,18 @@ let forceCountRejection = false
 function MockModel (object) {
   doc = object
 }
-MockModel.prototype.save = jest.fn(cb => {
-  forceSaveRejection
-    ? cb(error)
-    : cb(undefined, savedEvent)
-})
-MockModel.find = jest.fn((comparator, cb) => {
-  forceFindRejection
-    ? cb(error)
-    : cb(undefined, foundEvents)
-})
-MockModel.count = jest.fn((aggregateId, cb) => {
-  forceCountRejection
-    ? cb(error)
-    : cb(undefined, countEventsTotal)
-})
+MockModel.prototype.save = jest.fn(cb => forceSaveRejection
+  ? Promise.reject(error)
+  : Promise.resolve(savedEvent)
+)
+MockModel.find = jest.fn(comparator => forceFindRejection
+  ? Promise.reject(error)
+  : Promise.resolve(foundEvents)
+)
+MockModel.countDocuments = jest.fn(aggregateId => forceCountRejection
+  ? Promise.reject(error)
+  : Promise.resolve(countEventsTotal)
+)
 
 jest.mock('../../lib/event/model', () => MockModel)
 
@@ -51,7 +52,7 @@ describe('create', () => {
   beforeAll(() => Event.create(argument))
 
   it('gets the count for the arguments aggregateId', () => {
-    expect(MockModel.count).toHaveBeenCalledWith({ aggregateId: argument.aggregateId }, expect.anything())
+    expect(MockModel.countDocuments).toHaveBeenCalledWith({ aggregateId: argument.aggregateId })
   })
 
   describe('constructs an Event', () => {
@@ -73,9 +74,29 @@ describe('create', () => {
   })
 
   describe('returns a promise', () => {
-    it('resolves with the saved event if the save is a success', async () => {
-      forceSaveRejection = false
-      await expect(Event.create(argument)).resolves.toEqual(savedEvent)
+    describe('resolves with the saved event if the save is a success', async () => {
+      let result
+
+      beforeAll(async () => {
+        forceSaveRejection = false
+        result = await Event.create(argument)
+      })
+
+      it('the body is the event', () => {
+        expect(result).toEqual(expect.objectContaining({ body: savedEvent.body }))
+      })
+
+      it('the version is the result of the count', () => {
+        expect(result).toEqual(expect.objectContaining({
+          version: countEventsTotal
+        }))
+      })
+
+      it('there are no other properties in the response', () => {
+        expect(Object.keys(result)).toEqual([
+          'body', 'version'
+        ])
+      })
     })
 
     it('rejects with the error if the save fails', async () => {
@@ -85,7 +106,7 @@ describe('create', () => {
   })
 })
 
-describe('read', () => {
+describe('find', () => {
   const argument = {
     some: 'comparator'
   }
@@ -94,6 +115,24 @@ describe('read', () => {
 
   it('finds all events with the comparator argument', () => {
     expect(MockModel.find).toHaveBeenCalledWith(argument, expect.anything())
+  })
+
+  describe('excludes fields from the response', () => {
+    it('mongo id', () => {
+      expect(MockModel.find).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+        _id: 0
+      }))
+    })
+    it('mongo version', () => {
+      expect(MockModel.find).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+        __v: 0
+      }))
+    })
+    it('aggregate id', () => {
+      expect(MockModel.find).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+        aggregateId: 0
+      }))
+    })
   })
 
   describe('returns a promise', () => {
@@ -115,7 +154,7 @@ describe('count', () => {
   beforeAll(() => Event.count(aggregateId))
 
   it('counts all events with the aggregateId argument', () => {
-    expect(MockModel.count).toHaveBeenCalledWith({ aggregateId }, expect.anything())
+    expect(MockModel.countDocuments).toHaveBeenCalledWith({ aggregateId })
   })
 
   describe('returns a promise', () => {
