@@ -4,6 +4,8 @@ const connectionRetryInterval = 1000
 
 let connectionUri
 
+let timeoutId = 0
+
 mongoose.Promise = global.Promise
 const db = mongoose.connection
 
@@ -13,7 +15,8 @@ db.on('error', () => {
   mongoose.disconnect()
 })
 db.on('disconnected', () => {
-  setTimeout(connect, connectionRetryInterval)
+  clearTimeout(timeoutId)
+  timeoutId = setTimeout(connect, connectionRetryInterval)
 })
 
 module.exports.connect = uri => new Promise((resolve, reject) => {

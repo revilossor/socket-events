@@ -20,6 +20,10 @@ beforeAll(() => {
   store = require('../lib/store')
 })
 
+afterAll(() => {
+  jest.clearAllTimers()
+})
+
 describe('connect', () => {
   let returnedThing
 
@@ -79,6 +83,10 @@ describe('on disconnect', () => {
   beforeAll(() => {
     mockMongoose.connect.mockClear()
     handlers.disconnected()
+  })
+
+  it('clears timeout', () => {
+    expect(clearTimeout).toHaveBeenCalledWith(0)
   })
 
   describe('connects again', () => {

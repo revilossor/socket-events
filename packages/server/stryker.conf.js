@@ -9,7 +9,7 @@ module.exports = function (config) {
     testRunner: 'jest',
     transpilers: [],
     timeoutFactor: 1,
-    timeoutMS: 200,
+    timeoutMS: 500,
     coverageAnalysis: 'off'
   })
 }
