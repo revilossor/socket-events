@@ -16,13 +16,15 @@ const someResults = [
 ]
 const noResults = []
 
+const mockSavedEvent = { saved: 'event' }
+
 let mockFindResult = someResults
 
 const mockEvent = {
   create: jest.fn(() => new Promise((resolve, reject) => {
     forceCreateRejection
       ? reject(mockError)
-      : resolve()
+      : resolve(mockSavedEvent)
   })),
   count: jest.fn(() => new Promise((resolve, reject) => {
     forceCountRejection
@@ -36,7 +38,16 @@ const mockEvent = {
   }))
 }
 
-jest.mock('../../lib/event', () => mockEvent)
+const event = 'mock event'
+const data = { some: 'data' }
+
+const mockParserMiddleware = (req, res, next) => {
+  req.body = { event, data }
+  next()
+}
+const mockBodyParser = {
+  json: jest.fn(() => mockParserMiddleware)
+}
 
 const aggregateId = 'aggregateId'
 const version = '42'
@@ -44,10 +55,18 @@ const version = '42'
 let app
 
 beforeAll(() => {
+  jest.mock('../../lib/event', () => mockEvent)
+  jest.mock('body-parser', () => mockBodyParser)
   jest.spyOn(express.Router, 'route')
+  jest.spyOn(express.Router, 'use')
   console.error = jest.fn()
   app = express()
   app.use('/', require('../../lib/routers/event'))
+})
+
+it('parses json', () => {
+  expect(mockBodyParser.json).toHaveBeenCalled()
+  expect(express.Router.use).toHaveBeenCalledWith(mockParserMiddleware)
 })
 
 describe('/:id', () => {
@@ -104,6 +123,7 @@ describe('/:id', () => {
         })
         afterAll(() => {
           forceFindRejection = false
+          console.error.mockClear()
         })
 
         it('status is 500', () => {
@@ -165,6 +185,7 @@ describe('/:id', () => {
         })
         afterAll(() => {
           forceFindRejection = false
+          console.error.mockClear()
         })
 
         it('status is 500', () => {
@@ -201,6 +222,76 @@ describe('/:id', () => {
   })
 
   describe('POST', () => {
+    const makeRequest = (event, data = {}) => request(app)
+      .post(`/${aggregateId}`)
+      .send({ event, data })
+      .then(res => {
+        response = res
+        return response
+      })
 
+    beforeAll(async () => makeRequest(event, data))
+
+    describe('creates an event', () => {
+      it('with the correct aggragate id', () => {
+        expect(mockEvent.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            aggregateId
+          })
+        )
+      })
+
+      describe('with the correct body', () => {
+        it('with the correct event', () => {
+          expect(mockEvent.create).toHaveBeenCalledWith(
+            expect.objectContaining({
+              body: expect.objectContaining({
+                event
+              })
+            })
+          )
+        })
+        it('with the correct data', () => {
+          expect(mockEvent.create).toHaveBeenCalledWith(
+            expect.objectContaining({
+              body: expect.objectContaining({
+                data
+              })
+            })
+          )
+        })
+      })
+    })
+
+    it('status is 200', () => {
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('body is the saved event', () => {
+      expect(response.body).toEqual(mockSavedEvent)
+    })
+
+    describe('if there is an error creating an event', () => {
+      beforeAll(async () => {
+        forceCreateRejection = true
+        await makeRequest(event, data)
+      })
+      afterAll(() => {
+        forceCreateRejection = false
+        console.error.mockClear()
+      })
+
+      it('status is 500', () => {
+        expect(response.statusCode).toBe(500)
+      })
+
+      it('console.errors the error stack', () => {
+        expect(console.error).toHaveBeenCalledWith(mockError.stack)
+      })
+
+      it('text is the error stack', () => {
+        expect(response.text).toBe(mockError.stack)
+      })
+    })
   })
 })

@@ -17,6 +17,7 @@
     "integration": "newman run postman.json"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "json-url": "^2.3.4",
     "mongoose": "^5.4.15",

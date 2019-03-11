@@ -1,5 +1,8 @@
 const event = require('../event')
 const router = require('express').Router()
+const bodyParser = require('body-parser')
+
+router.use(bodyParser.json())
 
 router.route('/:id')
   .get((req, res, next) => {
@@ -14,6 +17,17 @@ router.route('/:id')
             ? 200
             : 404
         ).json(result)
+      })
+      .catch(next)
+  })
+  .post((req, res, next) => {
+    event
+      .create({
+        aggregateId: req.params.id,
+        body: req.body
+      })
+      .then(result => {
+        res.json(result)
       })
       .catch(next)
   })
