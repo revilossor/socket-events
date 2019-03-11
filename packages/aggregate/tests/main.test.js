@@ -1,4 +1,4 @@
-import main from '../src/main'
+let main
 
 let Aggregate
 
@@ -10,6 +10,7 @@ const mockIo = jest.fn(() => mockSocket)
 beforeAll(() => {
   jest.mock('socket.io-client', () => mockIo)
   Aggregate = require('../src/Aggregate').default
+  main = require('../src/main').default
 })
 
 const url = 'url'

@@ -28,14 +28,14 @@ describe('constructor', () => {
     expect(instance.id).toBe(id)
   })
 
-  // describe('opens a socket', () => {
-  //   it('with the url', () => {
-  //     expect(mockIo).toHaveBeenCalledWith(url)
-  //   })
-  //   it('stores it', () => {
-  //     expect(instance.socket).toBe(mockSocket)
-  //   })
-  // })
+  describe('opens a socket', () => {
+    it('with the url', () => {
+      expect(mockIo).toHaveBeenCalledWith(url)
+    })
+    it('stores it', () => {
+      expect(instance.socket).toBe(mockSocket)
+    })
+  })
 
   it('inits state to null', () => {
     expect(instance.state).toBe(null)
