@@ -335,5 +335,28 @@ describe('/version/:id', () => {
     it('text is the version', () => {
       expect(response.text).toBe(`${version}`)
     })
+
+    describe('if there is an error counting events', () => {
+      beforeAll(async () => {
+        forceCountRejection = true
+        await makeRequest()
+      })
+      afterAll(() => {
+        forceCountRejection = false
+        console.error.mockClear()
+      })
+
+      it('status is 500', () => {
+        expect(response.statusCode).toBe(500)
+      })
+
+      it('console.errors the error stack', () => {
+        expect(console.error).toHaveBeenCalledWith(mockError.stack)
+      })
+
+      it('text is the error stack', () => {
+        expect(response.text).toBe(mockError.stack)
+      })
+    })
   })
 })
