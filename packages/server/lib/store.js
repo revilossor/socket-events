@@ -19,11 +19,7 @@ db.on('disconnected', () => {
   timeoutId = setTimeout(connect, connectionRetryInterval)
 })
 
-module.exports.connect = uri => new Promise((resolve, reject) => {
+module.exports.connect = async uri => {
   connectionUri = uri
-  connect()
-  db.once('open', () => {
-    console.log('connection opened!')
-    resolve()
-  })
-})
+  return connect()
+}

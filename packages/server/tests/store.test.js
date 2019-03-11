@@ -48,22 +48,6 @@ describe('connect', () => {
       )
     })
   })
-
-  describe('when connection is open', () => {
-    beforeAll(async () => {
-      console.log.mockClear()
-      handlers.open()
-      await returnedThing
-    })
-
-    it('logs', () => {
-      expect(console.log).toHaveBeenCalledWith(`connection opened!`)
-    })
-
-    it('promise is resolved', () =>
-      returnedThing.then(() => expect(true).toBe(true))
-    )
-  })
 })
 
 describe('on error', () => {
