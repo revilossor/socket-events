@@ -8,7 +8,7 @@ it('prints the message when the promise resolves', async () => {
   console.log = jest.fn()
   announcer(promise, message)
   await resolvePromise()
-  expect(console.log).toHaveBeenCalledWith(`= ${message} =`)
+  expect(console.log).toHaveBeenCalledWith(message)
 })
 
 it('returns a promise', () => {
