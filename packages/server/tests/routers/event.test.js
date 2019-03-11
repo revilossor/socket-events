@@ -53,6 +53,7 @@ const aggregateId = 'aggregateId'
 const version = '42'
 
 let app
+let response
 
 beforeAll(() => {
   jest.mock('../../lib/event', () => mockEvent)
@@ -70,8 +71,6 @@ it('parses json', () => {
 })
 
 describe('/:id', () => {
-  let response
-
   it('sets a route', () => {
     expect(express.Router.route).toHaveBeenCalledWith('/:id')
   })
@@ -301,6 +300,40 @@ describe('/:id', () => {
       it('text is the error stack', () => {
         expect(response.text).toBe(mockError.stack)
       })
+    })
+  })
+})
+
+describe('/version/:id', () => {
+  it('sets a route', () => {
+    expect(express.Router.route).toHaveBeenCalledWith('/version/:id')
+  })
+
+  describe('GET', () => {
+    const makeRequest = async () => request(app)
+      .get(`/version/${aggregateId}`)
+      .then(res => {
+        response = res
+        return response
+      })
+
+    beforeAll(async () => {
+      forceCountRejection = false
+      return makeRequest()
+    })
+
+    it('counts events for the aggregateId', () => {
+      expect(mockEvent.count).toHaveBeenCalledWith(
+        aggregateId
+      )
+    })
+
+    it('status is 200', () => {
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('text is the version', () => {
+      expect(response.text).toBe(`${version}`)
     })
   })
 })

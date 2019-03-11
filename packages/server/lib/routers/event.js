@@ -32,6 +32,14 @@ router.route('/:id')
       .catch(next)
   })
 
+router.route('/version/:id')
+  .get((req, res, next) => {
+    event
+      .count(req.params.id)
+      .then(version => res.send(`${version}`))
+      .catch(next)
+  })
+
 router.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).send(err.stack)
