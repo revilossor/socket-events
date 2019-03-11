@@ -49,7 +49,7 @@ describe('create', () => {
     }
   }
 
-  beforeAll(() => Event.create(argument))
+  beforeAll(async () => Event.create(argument))
 
   it('gets the count for the arguments aggregateId', () => {
     expect(MockModel.countDocuments).toHaveBeenCalledWith({ aggregateId: argument.aggregateId })
