@@ -12,7 +12,7 @@ echo " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 echo ""
 echo "--> spinning up docker services..."
 
-docker-compose up -d
+docker-compose up -d --build
 
 echo "--> waiting for server to be listening..."
 

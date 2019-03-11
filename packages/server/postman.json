@@ -46,6 +46,48 @@
 			"response": []
 		},
 		{
+			"name": "get version (0)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body says \\\"0\\\"\", function () {",
+							"    pm.response.to.have.body(\"0\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/version/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"version",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add valid event with string data",
 			"event": [
 				{
@@ -98,6 +140,48 @@
 					"port": "8080",
 					"path": [
 						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get version (1)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body says \\\"1\\\"\", function () {",
+							"    pm.response.to.have.body(\"1\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/version/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"version",
 						"aggregateId"
 					]
 				}
@@ -164,6 +248,48 @@
 			"response": []
 		},
 		{
+			"name": "get version (2)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body says \\\"2\\\"\", function () {",
+							"    pm.response.to.have.body(\"2\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/version/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"version",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add valid event with object data",
 			"event": [
 				{
@@ -223,6 +349,48 @@
 			"response": []
 		},
 		{
+			"name": "get version (3)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body says \\\"3\\\"\", function () {",
+							"    pm.response.to.have.body(\"3\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/version/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"version",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add valid event with no data",
 			"event": [
 				{
@@ -275,6 +443,48 @@
 					"port": "8080",
 					"path": [
 						"event",
+						"aggregateId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get version (4)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e23a93ec-7746-4011-afff-4afa9062154b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body says \\\"4\\\"\", function () {",
+							"    pm.response.to.have.body(\"4\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/event/version/aggregateId",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"version",
 						"aggregateId"
 					]
 				}
