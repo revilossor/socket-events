@@ -46,10 +46,30 @@ describe('constructor', () => {
 //   // register an event handler
 // })
 //
-// describe('init', () => {
-//   // inits all events to a version
-// })
-//
 // describe('push', () => {
 //   // adds events
+// })
+//
+// describe('play', () => {
+//   // update version to latest and start listening for events
+// })
+//
+// describe('pause', () => {
+//   // stop listening for events
+// })
+//
+// describe('pause', () => {
+//   // stop listening for events
+// })
+//
+// describe('skip', () => {
+//   // inits to a version
+// })
+//
+// describe('forward', () => {
+//   // inits to a version + 1
+// })
+//
+// describe('back', () => {
+//   // inits to a version - 1
 // })
