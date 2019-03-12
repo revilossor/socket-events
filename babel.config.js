@@ -5,7 +5,6 @@ module.exports = function (api) {
   const plugins = ['@babel/plugin-transform-runtime']
   return {
     presets,
-    plugins,
-    babelrcRoots: 'packages/*'
+    plugins
   }
 }

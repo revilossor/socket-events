@@ -4,4 +4,4 @@ data/*
 *.log
 coverage
 .stryker-tmp
-**/*/ignore.js
+**/*/ignore*.js

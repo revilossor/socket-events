@@ -1,16 +1,24 @@
-import io from 'socket.io-client'
 import Aggregate from './Aggregate'
 
 class ConnectedAggregate extends Aggregate {
-  constructor (url, id) {
+  constructor (socket, url, id) {
     super()
-    this.url = url
     this.id = id
-    this.socket = io(url)
+    this.socket = socket(`${url}/socket`)
   }
-  // TODO init gets all events over http, opens socket to aggregate stream, supers
-  // TODO push sends to socket, supers
-  // TODO processes event when received from stream
+  async init (version) {
+    this.socket.emit('aggregateId', this.id)
+
+    this.socket.on('push', event => {
+      this.process(event)
+    })
+
+    return super.init(version)
+  }
+  async push (body) {
+    await super.push(body)
+    this.socket.emit('push', { aggregateId: this.id, body })
+  }
 }
 
 export default ConnectedAggregate

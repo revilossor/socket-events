@@ -1,41 +1,116 @@
+import Aggregate from '../src/Aggregate'
 let ConnectedAggregate
 
-const mockSocket = {
-  mock: 'socket'
+const handlers = {}
+const mockSocketInstance = {
+  emit: jest.fn(),
+  on: jest.fn((key, fn) => {
+    handlers[key] = fn
+  })
 }
-const mockIo = jest.fn(() => mockSocket)
+const mockSocket = jest.fn(() => mockSocketInstance)
 
-const url = 'mock url'
 const id = 'mock id'
+const url = 'mock url'
 
 let instance
 
 beforeAll(() => {
-  jest.mock('socket.io-client', () => mockIo)
   ConnectedAggregate = require('../src/ConnectedAggregate').default
 })
 
-// extends aggregate
-
 describe('constructor', () => {
   beforeAll(() => {
-    instance = new ConnectedAggregate(url, id)
+    instance = new ConnectedAggregate(mockSocket, url, id)
   })
 
-  it('stores the url', () => {
-    expect(instance.url).toBe(url)
+  it('extends Aggregate', () => {
+    expect(ConnectedAggregate.prototype).toBeInstanceOf(Aggregate)
+  })
+
+  it('inits the socket with the right url', () => {
+    expect(mockSocket).toHaveBeenCalledWith(`${url}/socket`)
+  })
+
+  it('stores the socket', () => {
+    expect(instance.socket).toBe(mockSocketInstance)
   })
 
   it('stores the id', () => {
     expect(instance.id).toBe(id)
   })
+})
 
-  describe('opens a socket', () => {
-    it('with the url', () => {
-      expect(mockIo).toHaveBeenCalledWith(url)
+describe('init', () => {
+  const version = 999
+
+  let init
+
+  beforeAll(async () => {
+    instance = new ConnectedAggregate(mockSocket, url, id)
+    init = jest.spyOn(Aggregate.prototype, 'init')
+    await instance.init(version)
+  })
+
+  it('calls Aggregate init with the item', async () => {
+    expect(init).toHaveBeenCalledWith(version)
+  })
+
+  it('emits an aggregateId event with the id', () => {
+    expect(mockSocketInstance.emit).toHaveBeenCalledWith('aggregateId', id)
+  })
+
+  it('listents for push events', () => {
+    expect(mockSocketInstance.on).toHaveBeenCalledWith('push', expect.any(Function))
+  })
+
+  describe('on push event received', () => {
+    const item = {
+      event: 'event',
+      data: 'data'
+    }
+
+    let process
+
+    beforeAll(() => {
+      process = jest.spyOn(ConnectedAggregate.prototype, 'process').mockReturnValueOnce('')
+      handlers['push'](item)
     })
-    it('stores it', () => {
-      expect(instance.socket).toBe(mockSocket)
+
+    it('processes the event', () => {
+      expect(process).toHaveBeenCalledWith(item)
+    })
+  })
+})
+
+describe('push', () => {
+  let push
+
+  const item = {
+    event: 'event',
+    data: 'data'
+  }
+
+  beforeAll(async () => {
+    instance = new ConnectedAggregate(mockSocket, url, id)
+    instance.register(item.event, state => state)
+    await instance.init()
+    push = jest.spyOn(Aggregate.prototype, 'push')
+    await instance.push(item)
+  })
+
+  it('calls Aggregate push with the item', async () => {
+    expect(push).toHaveBeenCalledWith(item)
+  })
+
+  it('emits a push event', () => {
+    expect(mockSocketInstance.emit).toHaveBeenCalledWith('push', expect.anything())
+  })
+
+  it('emitted body is data, aggragateId is id', () => {
+    expect(mockSocketInstance.emit).toHaveBeenCalledWith(expect.anything(), {
+      aggregateId: id,
+      body: item
     })
   })
 })

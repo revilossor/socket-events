@@ -8,11 +8,6 @@ class Aggregate {
   get version () {
     return this.events.length
   }
-  initializedCheck () {
-    if (!this.initialized) {
-      throw Error('aggregate not initialized')
-    }
-  }
   register (event, handler) {
     this.handlers[event] = handler
   }
@@ -20,7 +15,9 @@ class Aggregate {
     delete this.handlers[event]
   }
   async process (item) {
-    this.initializedCheck()
+    if (!this.initialized) {
+      throw Error('aggregate not initialized')
+    }
     if (!this.handlers[item.event]) {
       throw Error(`cannot handle ${item.event}`)
     } else {

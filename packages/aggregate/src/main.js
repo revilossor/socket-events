@@ -1,3 +1,3 @@
 import ConnectedAggregate from './ConnectedAggregate'
 
-export default url => id => new ConnectedAggregate(url, id)
+export default (socket, url) => id => new ConnectedAggregate(socket, url, id)

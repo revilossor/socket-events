@@ -1,30 +1,20 @@
-let main
+import main from '../src/main'
+import ConnectedAggregate from '../src/ConnectedAggregate'
 
-let ConnectedAggregate
-
-const mockSocket = {
-  mock: 'socket'
-}
-const mockIo = jest.fn(() => mockSocket)
-
-beforeAll(() => {
-  jest.mock('socket.io-client', () => mockIo)
-  ConnectedAggregate = require('../src/ConnectedAggregate').default
-  main = require('../src/main').default
-})
-
-const url = 'url'
+const mockIo = () => {}
+const mockSocket = jest.fn(() => mockIo)
 const id = 'id'
+const url = 'mockUrl'
 
 it('exports a function', () => {
   expect(main).toBeInstanceOf(Function)
 })
 
-describe('when the function is called with a url', () => {
+describe('when the function is called with a socket and a url', () => {
   let returned
 
   beforeAll(() => {
-    returned = main(url)
+    returned = main(mockSocket, url)
   })
 
   it('returns a function', () => {
@@ -42,8 +32,12 @@ describe('when the function is called with a url', () => {
       expect(instance).toBeInstanceOf(ConnectedAggregate)
     })
 
-    it('has the right url', () => {
-      expect(instance.url).toBe(url)
+    it('inits the socket with the right url', () => {
+      expect(mockSocket).toHaveBeenCalledWith(`${url}/socket`)
+    })
+
+    it('has the right socket', () => {
+      expect(instance.socket).toBe(mockIo)
     })
 
     it('has the right id', () => {
