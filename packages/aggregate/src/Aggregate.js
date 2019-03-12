@@ -2,8 +2,11 @@ class Aggregate {
   constructor () {
     this.state = null
     this.handlers = {}
-    this.version = 0
     this.initialized = false
+    this.events = []
+  }
+  get version () {
+    return this.events.length
   }
   initializedCheck () {
     if (!this.initialized) {
@@ -16,16 +19,20 @@ class Aggregate {
   deregister (event) {
     delete this.handlers[event]
   }
-  init () {
+  async init () {
     this.initialized = true
   }
-  async push (item) {
+  async process (item) {
     this.initializedCheck()
     if (!this.handlers[item.event]) {
       throw Error(`cannot handle ${item.event}`)
     } else {
-      this.state = this.handlers[item.event].call(this, this.state, item.data) // TODO handle promises
+      this.state = await this.handlers[item.event].call(this, this.state, item.data)
     }
+  }
+  async push (item) {
+    await this.process(item)
+    this.events.push(item)
   }
 }
 
