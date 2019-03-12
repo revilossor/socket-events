@@ -1,42 +1,17 @@
 let Aggregate
 
-const mockSocket = {
-  mock: 'socket'
-}
-const mockIo = jest.fn(() => mockSocket)
-
-const url = 'mock url'
-const id = 'mock id'
 const event = 'mock event'
 const data = 'mock data'
 
 let instance
 
 beforeAll(() => {
-  jest.mock('socket.io-client', () => mockIo)
   Aggregate = require('../src/Aggregate').default
 })
 
 describe('constructor', () => {
   beforeAll(() => {
-    instance = new Aggregate(url, id)
-  })
-
-  it('stores the url', () => {
-    expect(instance.url).toBe(url)
-  })
-
-  it('stores the id', () => {
-    expect(instance.id).toBe(id)
-  })
-
-  describe('opens a socket', () => {
-    it('with the url', () => {
-      expect(mockIo).toHaveBeenCalledWith(url)
-    })
-    it('stores it', () => {
-      expect(instance.socket).toBe(mockSocket)
-    })
+    instance = new Aggregate()
   })
 
   it('inits state to null', () => {
@@ -58,7 +33,7 @@ describe('constructor', () => {
 
 describe('register', () => {
   beforeAll(() => {
-    instance = new Aggregate(url, id)
+    instance = new Aggregate()
   })
 
   it('adds the handler to the instance', () => {
@@ -70,7 +45,7 @@ describe('register', () => {
 
 describe('deregister', () => {
   beforeAll(() => {
-    instance = new Aggregate(url, id)
+    instance = new Aggregate()
     instance.register(event, () => {})
   })
 
@@ -84,7 +59,7 @@ describe('deregister', () => {
 describe('init', () => {
   describe('with no version argument', () => {
     beforeAll(async () => {
-      instance = new Aggregate(url, id)
+      instance = new Aggregate()
       await instance.init()
     })
 
@@ -102,7 +77,7 @@ describe('push', () => {
 
   describe('if the instance has not been initialized', () => {
     beforeAll(() => {
-      instance = new Aggregate(url, id)
+      instance = new Aggregate()
     })
 
     it('rejects with an error', async () => {
@@ -117,7 +92,7 @@ describe('push', () => {
     let after
 
     beforeAll(async () => {
-      instance = new Aggregate(url, id)
+      instance = new Aggregate()
       await instance.init()
     })
 
@@ -154,7 +129,7 @@ describe('push', () => {
 
   describe('if there is no handler for the event', () => {
     beforeAll(async () => {
-      instance = new Aggregate(url, id)
+      instance = new Aggregate()
       await instance.init()
     })
 

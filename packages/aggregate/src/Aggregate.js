@@ -1,18 +1,13 @@
-import io from 'socket.io-client'
-
 class Aggregate {
-  constructor (url, id) {
-    this.url = url
-    this.id = id
-    this.socket = io(url)
+  constructor () {
     this.state = null
     this.handlers = {}
     this.version = 0
     this.initialized = false
-    this.initializedCheck = () => {
-      if (!this.initialized) {
-        throw Error('aggregate not initialized')
-      }
+  }
+  initializedCheck () {
+    if (!this.initialized) {
+      throw Error('aggregate not initialized')
     }
   }
   register (event, handler) {
@@ -29,7 +24,7 @@ class Aggregate {
     if (!this.handlers[item.event]) {
       throw Error(`cannot handle ${item.event}`)
     } else {
-      this.state = this.handlers[item.event].call(this, this.state, item.data)
+      this.state = this.handlers[item.event].call(this, this.state, item.data) // TODO handle promises
     }
   }
 }

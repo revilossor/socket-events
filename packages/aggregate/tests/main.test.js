@@ -1,6 +1,6 @@
 let main
 
-let Aggregate
+let ConnectedAggregate
 
 const mockSocket = {
   mock: 'socket'
@@ -9,7 +9,7 @@ const mockIo = jest.fn(() => mockSocket)
 
 beforeAll(() => {
   jest.mock('socket.io-client', () => mockIo)
-  Aggregate = require('../src/Aggregate').default
+  ConnectedAggregate = require('../src/ConnectedAggregate').default
   main = require('../src/main').default
 })
 
@@ -39,7 +39,7 @@ describe('when the function is called with a url', () => {
     })
 
     it('returns an Aggregate instance', () => {
-      expect(instance).toBeInstanceOf(Aggregate)
+      expect(instance).toBeInstanceOf(ConnectedAggregate)
     })
 
     it('has the right url', () => {

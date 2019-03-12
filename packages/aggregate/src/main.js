@@ -1,3 +1,3 @@
-import Aggregate from './Aggregate'
+import ConnectedAggregate from './ConnectedAggregate'
 
-export default url => id => new Aggregate(url, id)
+export default url => id => new ConnectedAggregate(url, id)
