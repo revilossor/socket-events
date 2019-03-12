@@ -80,14 +80,132 @@ describe('deregister', () => {
 })
 
 describe('init', () => {
+  const mockEvents = [
+    {
+      event: 'one',
+      data: 1
+    },
+    {
+      event: 'two',
+      data: 2
+    },
+    {
+      event: 'three',
+      data: 8
+    }
+  ]
+
+  const outputOne = 10
+  const outputTwo = 20
+  const outputThree = 30
+
+  const one = jest.fn(() => outputOne)
+  const two = jest.fn(() => outputTwo)
+  const three = jest.fn(() => outputThree)
+
+  beforeAll(async () => {
+    instance = new Aggregate()
+    instance.register('one', one)
+    instance.register('two', two)
+    instance.register('three', three)
+    before = instance.state
+    instance.events = mockEvents
+    await instance.init()
+  })
+
   describe('with no version argument', () => {
     beforeAll(async () => {
-      instance = new Aggregate()
+      instance.events = mockEvents
       await instance.init()
+    })
+
+    afterAll(() => {
+      one.mockClear()
+      two.mockClear()
+      three.mockClear()
+      instance.state = null
     })
 
     it('sets instance initialized to true', () => {
       expect(instance.initialized).toBe(true)
+    })
+
+    describe('processes each of the events', () => {
+      it('the first one with a null state', () => {
+        expect(one).toHaveBeenCalledWith(before, mockEvents[0].data)
+      })
+      it('the second one with the output of the first', () => {
+        expect(two).toHaveBeenCalledWith(outputOne, mockEvents[1].data)
+      })
+      it('the third one with the output of the second', () => {
+        expect(three).toHaveBeenCalledWith(outputTwo, mockEvents[2].data)
+      })
+    })
+
+    it('sets the processed state', () => {
+      expect(instance.state).toEqual(outputThree)
+    })
+  })
+
+  describe('with a version argument less than the length of the store', () => {
+    beforeAll(async () => {
+      instance.events = mockEvents
+      await instance.init(1)
+    })
+
+    it('sets instance initialized to true', () => {
+      expect(instance.initialized).toBe(true)
+    })
+
+    describe('processes number of events equal to version', () => {
+      it('the first one with a null state', () => {
+        expect(one).toHaveBeenCalledWith(before, mockEvents[0].data)
+      })
+      it('the second one with the output of the first', () => {
+        expect(two).toHaveBeenCalledWith(outputOne, mockEvents[1].data)
+      })
+      it('the third one is not processed', () => {
+        expect(three).not.toHaveBeenCalled()
+      })
+    })
+
+    it('sets the processed state', () => {
+      expect(instance.state).toEqual(outputTwo)
+    })
+
+    it('trims the events', () => {
+      expect(instance.events).toHaveLength(2)
+    })
+  })
+
+  describe('with a version argument greater than the length of the store', () => {
+    beforeAll(async () => {
+      instance.events = mockEvents
+      await instance.init(9001)
+    })
+
+    it('sets instance initialized to true', () => {
+      expect(instance.initialized).toBe(true)
+    })
+
+    describe('processes each of the events', () => {
+      it('the first one with a null state', () => {
+        expect(one).toHaveBeenCalledWith(before, mockEvents[0].data)
+      })
+      it('the second one with the output of the first', () => {
+        expect(two).toHaveBeenCalledWith(outputOne, mockEvents[1].data)
+      })
+      it('the third one with the output of the second', () => {
+        expect(three).toHaveBeenCalledWith(outputTwo, mockEvents[2].data)
+      })
+    })
+
+    it('sets the processed state', () => {
+      expect(instance.state).toEqual(outputThree)
+    })
+
+    it('the version is the number of events', () => {
+      expect(instance.version).toEqual(mockEvents.length)
     })
   })
 })

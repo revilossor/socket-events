@@ -19,9 +19,6 @@ class Aggregate {
   deregister (event) {
     delete this.handlers[event]
   }
-  async init () {
-    this.initialized = true
-  }
   async process (item) {
     this.initializedCheck()
     if (!this.handlers[item.event]) {
@@ -29,6 +26,14 @@ class Aggregate {
     } else {
       this.state = await this.handlers[item.event].call(this, this.state, item.data)
     }
+  }
+  async init (version) {
+    this.initialized = true
+    const trimmed = this.events.slice(0, version + 1 || this.events.length)
+    for (const event of trimmed) {
+      await this.process(event)
+    }
+    this.events = trimmed
   }
   async push (item) {
     await this.process(item)
