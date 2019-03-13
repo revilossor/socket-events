@@ -19,5 +19,5 @@
   "dependencies": {
     "socket.io-client": "^2.2.0"
   },
-  "gitHead": "a8b7b093514e320adf29ca98d5aa4119347a5171"
+  "gitHead": "9ac5bc42fd29720cd9530a1d520dd7ed13919af3"
 }
