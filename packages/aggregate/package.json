@@ -19,6 +19,5 @@
   "dependencies": {
     "@babel/runtime": "^7.3.4",
     "socket.io-client": "^2.2.0"
-  },
-  "gitHead": "9ac5bc42fd29720cd9530a1d520dd7ed13919af3"
+  }
 }
