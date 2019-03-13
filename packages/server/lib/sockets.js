@@ -6,7 +6,6 @@ module.exports.use = (route, server) => {
   const ws = io.of(route)
 
   ws.on('connection', socket => {
-    console.log('connection')
     socket.on('aggregateId', aggregateId => { // TODO this responds with all events
       socket.join(aggregateId)
       Event.find({ aggregateId }).then(events => {
