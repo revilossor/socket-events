@@ -1,14 +1,14 @@
 #!/usr/bin/env/bash
 echo "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+--+-+-+-+--+-+-+-+--+-+-"
-echo "stopping socket-events"
+echo " ---> stopping socket-events"
 
-echo "--> stopping docker services..."
+echo " ---> stopping docker services..."
 
 docker-compose down
 
-echo "--> ...ok"
+echo " ---> ...ok"
 
-echo "...done"
+echo " ---> done"
 echo "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+--+-+-+-+--+-+-+-+--+-+-"
 
 exit 0

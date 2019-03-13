@@ -1,5 +1,14 @@
 version: '3'
 services:
+  chat:
+    build:
+      context: ./packages/chat
+    volumes:
+      - ./packages/chat:/app
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
   server:
     build:
       context: ./packages/server

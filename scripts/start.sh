@@ -10,24 +10,37 @@ echo "+- |_______||_______||_______||___| |_||_______|  |___|    |_______|  |___
 echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
 echo " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  "
 echo ""
-echo "--> spinning up docker services..."
+echo " ---> spinning up docker services..."
 
 docker-compose up -d --build
 
-echo "--> waiting for server to be listening..."
+echo " ---> waiting for server to be listening..."
 
 SENTINEL_STRING="server listening"
 
 ( docker-compose logs -f & )| grep -q "${SENTINEL_STRING}"
 
 if [ $? -eq 0 ]; then
-  echo "--> ...ok"
+  echo " ---> ...ok"
 else
-  echo "--> there was a problem starting the offline serverless process " >&2
+  echo " ---> there was a problem starting the server" >&2
   exit $?
 fi
 
-echo "...done"
+echo " ---> waiting for chat app to be listening..."
+
+SENTINEL_STRING="Ready on http://localhost:3000"
+
+( docker-compose logs -f & )| grep -q "${SENTINEL_STRING}"
+
+if [ $? -eq 0 ]; then
+  echo " ---> ...ok"
+else
+  echo " ---> there was a problem starting the chat app" >&2
+  exit $?
+fi
+
+echo " ---> ...done"
 echo " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  "
 echo "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+--+-+-+-+--+-+-+-+-+-+-+-+-+-+"
 
