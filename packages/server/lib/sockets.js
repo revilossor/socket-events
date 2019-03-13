@@ -9,6 +9,9 @@ module.exports.use = (route, server) => {
     console.log('connection')
     socket.on('aggregateId', aggregateId => { // TODO this responds with all events
       socket.join(aggregateId)
+      Event.find({ aggregateId }).then(events => {
+        socket.emit('init', events)
+      })
     })
 
     socket.on('push', event => {

@@ -7,6 +7,7 @@ const mockInRoom = {
 const mockNamespace = {
   on: jest.fn((key, func) => { mockOnHandlers[key] = func }),
   join: jest.fn(),
+  emit: jest.fn(),
   in: jest.fn(() => mockInRoom)
 }
 const mockIo = {
@@ -14,8 +15,15 @@ const mockIo = {
 }
 const mockSocketIo = jest.fn(() => mockIo)
 
+const mockEvents = [
+  { event: 1 },
+  { event: 2 },
+  { event: 3 }
+]
+
 const mockEventModel = {
-  create: jest.fn(() => Promise.resolve())
+  create: jest.fn(() => Promise.resolve()),
+  find: jest.fn(() => Promise.resolve(mockEvents))
 }
 
 let sockets
@@ -55,8 +63,14 @@ describe('use', () => {
       beforeAll(() => {
         mockOnHandlers.aggregateId(aggregateId)
       })
+      it('gets all events for the aggregateId from the store', () => {
+        expect(mockEventModel.find).toHaveBeenCalledWith({ aggregateId })
+      })
       it('joins the room', () => {
         expect(mockNamespace.join).toHaveBeenCalledWith(aggregateId)
+      })
+      it('emits an init event to the sender with found events', () => {
+        expect(mockNamespace.emit).toHaveBeenCalledWith('init', mockEvents)
       })
     })
 
