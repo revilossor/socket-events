@@ -953,13 +953,6 @@
 	  }
 
 	  createClass(Aggregate, [{
-	    key: "initializedCheck",
-	    value: function initializedCheck() {
-	      if (!this.initialized) {
-	        throw Error('aggregate not initialized');
-	      }
-	    }
-	  }, {
 	    key: "register",
 	    value: function register(event, handler) {
 	      this.handlers[event] = handler;
@@ -979,23 +972,29 @@
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                this.initializedCheck();
+	                if (this.initialized) {
+	                  _context.next = 2;
+	                  break;
+	                }
 
+	                throw Error('aggregate not initialized');
+
+	              case 2:
 	                if (this.handlers[item.event]) {
-	                  _context.next = 5;
+	                  _context.next = 6;
 	                  break;
 	                }
 
 	                throw Error("cannot handle ".concat(item.event));
 
-	              case 5:
-	                _context.next = 7;
+	              case 6:
+	                _context.next = 8;
 	                return this.handlers[item.event].call(this, this.state, item.data);
 
-	              case 7:
+	              case 8:
 	                this.state = _context.sent;
 
-	              case 8:
+	              case 9:
 	              case "end":
 	                return _context.stop();
 	            }
@@ -1140,14 +1139,14 @@
 	function (_Aggregate) {
 	  inherits(ConnectedAggregate, _Aggregate);
 
-	  function ConnectedAggregate(socket, id) {
+	  function ConnectedAggregate(socket, url, id) {
 	    var _this;
 
 	    classCallCheck(this, ConnectedAggregate);
 
 	    _this = possibleConstructorReturn(this, getPrototypeOf(ConnectedAggregate).call(this));
 	    _this.id = id;
-	    _this.socket = socket;
+	    _this.socket = socket("".concat(url, "/socket"));
 	    return _this;
 	  }
 
@@ -1163,16 +1162,14 @@
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                console.log('[ConnectedAggregate] init');
-	                this.socket.emit('aggregateId', this.id);
-	                this.socket.on('push', function (event) {
-	                  console.log('got event : ' + JSON.stringify(event));
+	                this.socket.emit('aggregateId', this.id); // TODO this responds with all events - extract to async...
 
+	                this.socket.on('push', function (event) {
 	                  _this2.process(event);
 	                });
 	                return _context.abrupt("return", get(getPrototypeOf(ConnectedAggregate.prototype), "init", this).call(this, version));
 
-	              case 4:
+	              case 3:
 	              case "end":
 	                return _context.stop();
 	            }
@@ -1218,18 +1215,15 @@
 	      }
 
 	      return push;
-	    }() // TODO init gets all events over http, opens socket to aggregate stream, supers
-	    // TODO push sends to socket, supers
-	    // TODO processes event when received from stream
-
+	    }()
 	  }]);
 
 	  return ConnectedAggregate;
 	}(Aggregate);
 
-	var main = (function (socket) {
+	var main = (function (socket, url) {
 	  return function (id) {
-	    return new ConnectedAggregate(socket, id);
+	    return new ConnectedAggregate(socket, url, id);
 	  };
 	});
 

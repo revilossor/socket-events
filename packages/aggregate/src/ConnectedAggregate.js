@@ -7,7 +7,7 @@ class ConnectedAggregate extends Aggregate {
     this.socket = socket(`${url}/socket`)
   }
   async init (version) {
-    this.socket.emit('aggregateId', this.id)
+    this.socket.emit('aggregateId', this.id) // TODO this responds with all events - extract to async...
 
     this.socket.on('push', event => {
       this.process(event)
