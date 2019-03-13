@@ -34,6 +34,12 @@ npx lerna create <package_name>
 npm run logs -- <service name, eg server>
 ```
 
+**publishing**
+
+```bash
+NPM_CONFIG_OTP=123456 npx lerna publish
+```
+
 
 ## Integration tests
 
