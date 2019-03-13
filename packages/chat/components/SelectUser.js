@@ -1,15 +1,15 @@
 import { Component } from 'react'
 
-class SelectRoom extends Component {
+class SelectUser extends Component {
   render () {
     const { onSubmit, value } = this.props
     return (
       <form onSubmit={onSubmit}>
-        <label>room: </label>
-        <input type='text' id='room' name='room' placeholder={value} />
+        <label>user: </label>
+        <input type='text' id='user' name='user' placeholder={value} />
       </form>
     )
   }
 }
 
-export default SelectRoom
+export default SelectUser

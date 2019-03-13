@@ -2,10 +2,11 @@ import { Component } from 'react'
 
 class EnterMessage extends Component {
   render () {
+    const { onSubmit } = this.props
     return (
-      <div>
-        <p>EnterMessage</p>
-      </div>
+      <form onSubmit={onSubmit}>
+        <input type='textarea' id='message' name='message' />
+      </form>
     )
   }
 }

@@ -6,7 +6,7 @@ class Messages extends Component {
     return (
       <div>
         {messages.map(
-          (message, i) => <p key={'key-' + i}>{message}</p>
+          ({ user, message }, i) => <p key={'key-' + i}>{user}::{message}</p>
         )}
       </div>
     )
