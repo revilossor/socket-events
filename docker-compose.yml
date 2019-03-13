@@ -14,7 +14,7 @@ services:
     build:
       context: ./packages/server
     volumes:
-      - ./packages/server:/app
+      - ./packages/server/lib:/app/lib
     depends_on:
       - store
     ports:
