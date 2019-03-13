@@ -14,10 +14,15 @@ const mockIo = {
 }
 const mockSocketIo = jest.fn(() => mockIo)
 
+const mockEventModel = {
+  create: jest.fn(() => Promise.resolve())
+}
+
 let sockets
 
 beforeAll(() => {
   jest.mock('socket.io', () => mockSocketIo)
+  jest.mock('../lib/event', () => mockEventModel)
   sockets = require('../lib/sockets')
 })
 
@@ -69,6 +74,10 @@ describe('use', () => {
 
       beforeAll(() => {
         mockOnHandlers.push(mockEvent)
+      })
+
+      it('creates a new event in the store', () => {
+        expect(mockEventModel.create).toHaveBeenCalledWith(mockEvent)
       })
 
       it('emits the event to all in room', () => {

@@ -1,4 +1,5 @@
 const socketio = require('socket.io')
+const Event = require('./event')
 
 module.exports.use = (route, server) => {
   const io = socketio(server)
@@ -10,8 +11,10 @@ module.exports.use = (route, server) => {
       socket.join(aggregateId)
     })
 
-    socket.on('push', event => { // TODO this stores via event.create
-      socket.in(event.aggregateId).emit('push', event.body)
+    socket.on('push', event => {
+      Event.create(event).then(() => {
+        socket.in(event.aggregateId).emit('push', event.body)
+      })
     })
   })
 }
