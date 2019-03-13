@@ -29,6 +29,7 @@
   "dependencies": {
     "next": "^8.0.3",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "revilossor-socket-events-aggregate": "^0.0.0"
   }
 }
