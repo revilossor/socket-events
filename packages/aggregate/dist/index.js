@@ -1151,30 +1151,68 @@
 	  }
 
 	  createClass(ConnectedAggregate, [{
-	    key: "init",
+	    key: "connect",
 	    value: function () {
-	      var _init = asyncToGenerator(
+	      var _connect = asyncToGenerator(
 	      /*#__PURE__*/
-	      regenerator.mark(function _callee(version) {
+	      regenerator.mark(function _callee() {
 	        var _this2 = this;
 
 	        return regenerator.wrap(function _callee$(_context) {
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                this.socket.emit('aggregateId', this.id); // TODO this responds with all events - extract to async...
+	                this.socket.emit('aggregateId', this.id);
+	                return _context.abrupt("return", new Promise(function (resolve) {
+	                  _this2.socket.on('init', function (events) {
+	                    resolve(events.map(function (event) {
+	                      return event.body;
+	                    }));
+	                  });
+	                }));
 
-	                this.socket.on('push', function (event) {
-	                  _this2.process(event);
-	                });
-	                return _context.abrupt("return", get(getPrototypeOf(ConnectedAggregate.prototype), "init", this).call(this, version));
-
-	              case 3:
+	              case 2:
 	              case "end":
 	                return _context.stop();
 	            }
 	          }
 	        }, _callee, this);
+	      }));
+
+	      function connect() {
+	        return _connect.apply(this, arguments);
+	      }
+
+	      return connect;
+	    }()
+	  }, {
+	    key: "init",
+	    value: function () {
+	      var _init = asyncToGenerator(
+	      /*#__PURE__*/
+	      regenerator.mark(function _callee2(version) {
+	        var _this3 = this;
+
+	        return regenerator.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                _context2.next = 2;
+	                return this.connect();
+
+	              case 2:
+	                this.events = _context2.sent;
+	                this.socket.on('push', function (event) {
+	                  _this3.process(event);
+	                });
+	                return _context2.abrupt("return", get(getPrototypeOf(ConnectedAggregate.prototype), "init", this).call(this, version));
+
+	              case 5:
+	              case "end":
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
 	      }));
 
 	      function init(_x) {
@@ -1188,12 +1226,12 @@
 	    value: function () {
 	      var _push = asyncToGenerator(
 	      /*#__PURE__*/
-	      regenerator.mark(function _callee2(body) {
-	        return regenerator.wrap(function _callee2$(_context2) {
+	      regenerator.mark(function _callee3(body) {
+	        return regenerator.wrap(function _callee3$(_context3) {
 	          while (1) {
-	            switch (_context2.prev = _context2.next) {
+	            switch (_context3.prev = _context3.next) {
 	              case 0:
-	                _context2.next = 2;
+	                _context3.next = 2;
 	                return get(getPrototypeOf(ConnectedAggregate.prototype), "push", this).call(this, body);
 
 	              case 2:
@@ -1204,10 +1242,10 @@
 
 	              case 3:
 	              case "end":
-	                return _context2.stop();
+	                return _context3.stop();
 	            }
 	          }
-	        }, _callee2, this);
+	        }, _callee3, this);
 	      }));
 
 	      function push(_x2) {

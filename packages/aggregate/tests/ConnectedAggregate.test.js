@@ -45,19 +45,36 @@ describe('init', () => {
   const version = 999
 
   let init
+  let connect
+
+  const events = [
+    { event: 1 },
+    { event: 2 },
+    { event: 3 }
+  ]
 
   beforeAll(async () => {
     instance = new ConnectedAggregate(mockSocket, url, id)
     init = jest.spyOn(Aggregate.prototype, 'init')
+    jest.spyOn(Aggregate.prototype, 'process').mockImplementation(() => {})
+    connect = jest.spyOn(instance, 'connect').mockReturnValueOnce(events)
     await instance.init(version)
+  })
+
+  afterAll(() => {
+    jest.mockRestore(Aggregate.prototype.process)
+  })
+
+  it('calls the connect function', () => {
+    expect(connect).toHaveBeenCalled()
+  })
+
+  it('assigns the data from connect to events array', () => {
+    expect(instance.events).toEqual(events)
   })
 
   it('calls Aggregate init with the item', async () => {
     expect(init).toHaveBeenCalledWith(version)
-  })
-
-  it('emits an aggregateId event with the id', () => {
-    expect(mockSocketInstance.emit).toHaveBeenCalledWith('aggregateId', id)
   })
 
   it('listents for push events', () => {
@@ -83,6 +100,39 @@ describe('init', () => {
   })
 })
 
+describe('connect', () => {
+  const events = [
+    { body: { event: 1 } },
+    { body: { event: 2 } },
+    { body: { event: 3 } }
+  ]
+
+  let connectPromise
+
+  beforeAll(async () => {
+    instance = new ConnectedAggregate(mockSocket, url, id)
+    connectPromise = instance.connect()
+  })
+
+  it('emits an aggregateId event', () => {
+    expect(mockSocketInstance.emit).toHaveBeenCalledWith('aggregateId', id)
+  })
+
+  it('listens for init events', () => {
+    expect(mockSocketInstance.on).toHaveBeenCalledWith('init', expect.any(Function))
+  })
+
+  describe('init event handler', () => {
+    beforeAll(() => {
+      handlers['init'](events)
+    })
+
+    it('resolves with the body of the events', () => {
+      expect(connectPromise).resolves.toEqual(events.map(event => event.body))
+    })
+  })
+})
+
 describe('push', () => {
   let push
 
@@ -94,6 +144,7 @@ describe('push', () => {
   beforeAll(async () => {
     instance = new ConnectedAggregate(mockSocket, url, id)
     instance.register(item.event, state => state)
+    jest.spyOn(instance, 'connect').mockReturnValueOnce([])
     await instance.init()
     push = jest.spyOn(Aggregate.prototype, 'push')
     await instance.push(item)
