@@ -1,10 +1,16 @@
-import main from '../src/main'
-import ConnectedAggregate from '../src/ConnectedAggregate'
+let main
+let ConnectedAggregate
 
 const mockIo = () => {}
 const mockSocket = jest.fn(() => mockIo)
 const id = 'id'
 const url = 'mockUrl'
+
+beforeAll(() => {
+  jest.mock('socket.io-client', () => mockSocket)
+  main = require('../src/main').default
+  ConnectedAggregate = require('../src/ConnectedAggregate').default
+})
 
 it('exports a function', () => {
   expect(main).toBeInstanceOf(Function)
@@ -14,7 +20,7 @@ describe('when the function is called with a socket and a url', () => {
   let returned
 
   beforeAll(() => {
-    returned = main(mockSocket, url)
+    returned = main(url)
   })
 
   it('returns a function', () => {

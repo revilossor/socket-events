@@ -1,7 +1,8 @@
 import Aggregate from './Aggregate'
+const socket = require('socket.io-client')
 
 class ConnectedAggregate extends Aggregate {
-  constructor (socket, url, id) {
+  constructor (url, id) {
     super()
     this.id = id
     this.socket = socket(`${url}/socket`)

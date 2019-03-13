@@ -16,12 +16,13 @@ const url = 'mock url'
 let instance
 
 beforeAll(() => {
+  jest.mock('socket.io-client', () => mockSocket)
   ConnectedAggregate = require('../src/ConnectedAggregate').default
 })
 
 describe('constructor', () => {
   beforeAll(() => {
-    instance = new ConnectedAggregate(mockSocket, url, id)
+    instance = new ConnectedAggregate(url, id)
   })
 
   it('extends Aggregate', () => {
@@ -54,7 +55,7 @@ describe('init', () => {
   ]
 
   beforeAll(async () => {
-    instance = new ConnectedAggregate(mockSocket, url, id)
+    instance = new ConnectedAggregate(url, id)
     init = jest.spyOn(Aggregate.prototype, 'init')
     jest.spyOn(Aggregate.prototype, 'process').mockImplementation(() => {})
     connect = jest.spyOn(instance, 'connect').mockReturnValueOnce(events)
@@ -110,7 +111,7 @@ describe('connect', () => {
   let connectPromise
 
   beforeAll(async () => {
-    instance = new ConnectedAggregate(mockSocket, url, id)
+    instance = new ConnectedAggregate(url, id)
     connectPromise = instance.connect()
   })
 
@@ -142,7 +143,7 @@ describe('push', () => {
   }
 
   beforeAll(async () => {
-    instance = new ConnectedAggregate(mockSocket, url, id)
+    instance = new ConnectedAggregate(url, id)
     instance.register(item.event, state => state)
     jest.spyOn(instance, 'connect').mockReturnValueOnce([])
     await instance.init()

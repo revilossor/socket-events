@@ -2,9 +2,12 @@ import { Component } from 'react'
 
 class Messages extends Component {
   render () {
+    const { messages } = this.props
     return (
       <div>
-        <p>Messages</p>
+        {messages.map(
+          (message, i) => <p key={'key-' + i}>{message}</p>
+        )}
       </div>
     )
   }
