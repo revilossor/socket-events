@@ -1,7 +1,7 @@
 {
   "name": "revilossor-socket-events-chat",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "chat app using socket events",
   "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",
   "homepage": "https://github.com/revilossor/socket-events#readme",
@@ -31,6 +31,6 @@
     "next": "^8.0.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "revilossor-socket-events-aggregate": "^0.0.1"
+    "revilossor-socket-events-aggregate": "^0.0.2"
   }
 }
