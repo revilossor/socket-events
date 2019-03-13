@@ -14,6 +14,11 @@ class Index extends Component {
       </div>
     )
   }
+
+  static geiInitialProps = async () => {
+    console.log('get initial props!')
+    return {}
+  }
 }
 
 export default Index

@@ -13,8 +13,9 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm ci --only=production
+RUN npm ci
 
 COPY pages pages/
+COPY components components/
 
 CMD npm run dev

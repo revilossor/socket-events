@@ -6,6 +6,7 @@
   "scripts": {
     "start": "sh scripts/start.sh",
     "stop": "sh scripts/stop.sh",
+    "restart": "npm stop && npm start",
     "logs": "docker-compose logs -f",
     "lint": "standard",
     "unit": "jest",

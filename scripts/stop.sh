@@ -8,6 +8,13 @@ docker-compose down
 
 echo " ---> ...ok"
 
+echo " ---> cleaning up docker..."
+
+docker system prune -f
+
+echo " ---> ...ok"
+
+
 echo " ---> done"
 echo "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+--+-+-+-+--+-+-+-+--+-+-"
 

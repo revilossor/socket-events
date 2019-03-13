@@ -4,7 +4,8 @@ services:
     build:
       context: ./packages/chat
     volumes:
-      - ./packages/chat:/app
+      - ./packages/chat/pages:/app/pages
+      - ./packages/chat/components:/app/components
     depends_on:
       - server
     ports:
