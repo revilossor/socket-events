@@ -1,5 +1,6 @@
 {
   "name": "revilossor-socket-events-chat",
+  "private": true,
   "version": "0.0.0",
   "description": "chat app using socket events",
   "author": "Oliver Ross <oliver.ross01@bbc.co.uk>",

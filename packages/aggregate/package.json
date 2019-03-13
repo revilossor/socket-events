@@ -1,6 +1,6 @@
 {
   "name": "revilossor-socket-events-aggregate",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "description": "client aggregate of events from server",
   "repository": {
